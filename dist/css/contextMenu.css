@@ -8,7 +8,6 @@
   position: absolute;
   width: auto !important; }
   .menu.context li {
-    clear: all;
     position: relative;
     width: 100%; }
     .menu.context li[tabindex="0"] {
