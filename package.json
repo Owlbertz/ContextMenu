@@ -1,0 +1,24 @@
+{
+  "name": "ContextMenu",
+  "version": "0.0.1",
+  "description": "Context Menu plugin for Foundation 6.",
+  "main": "contextMenu.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Owlbertz/ContextMenu"
+  },
+  "keywords": [
+    "javascript",
+    "menu",
+    "foundation"
+  ],
+  "author": "Marius Olbertz",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Owlbertz/ContextMenu/issues"
+  },
+  "homepage": "https://github.com/Owlbertz/ContextMenu"
+}
