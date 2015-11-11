@@ -65,7 +65,6 @@ This plugin is partly accessible. To allow keyboard users to open the context me
 ```
 ## Touch support
 This plugin is also optimized for mobile and touch devices. You can toggle the context menu with a long-touch event, which duration can be adjusted in the plugin's options.
-```
 
 ## Demo
 Test the Context Menu on your own at the demo page!
