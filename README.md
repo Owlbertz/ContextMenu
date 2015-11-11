@@ -55,18 +55,22 @@ To add a context menu to one of your elements, e.g. elements within lists, simpl
     Second item here
   </li>
 ```
+
 ## Accessibility
-This plugin is partly accessible. To allow keyboard users to open the context menus, simply add the following buttons into your trigger elements.
+This plugin is partly accessible. To allow keyboard users to open the context menus, simply add the following buttons into your trigger elements. Elements having the `data-context-menu-trigger` attribute will trigger the context menu of their parent element when clicked.
 ```html
   <li data-context-menu="#menu">
     Second item here <button data-context-menu-trigger class="button tiny show-on-focus pull-right">Open menu</button>
   </li>
 ```
+## Touch support
+This plugin is also optimized for mobile and touch devices. You can toggle the context menu with a long-touch event, which duration can be adjusted in the plugin's options.
+```
 
 ## Demo
-Test the Context Menu on your own at the demo page.
+Test the Context Menu on your own at the demo page!
 
-http://owlbertz.github.io/ContextMenu/
+http://Owlbertz.github.io/ContextMenu/
 
 ## Acknowledgments
 As this project is a plugin for Foundation by ZURB, a big thanks for their stunning framework.
