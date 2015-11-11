@@ -18,20 +18,28 @@ To configure your menus, either render them in HTML following the Foundation men
       help: 'Alt + M',
       href: '#'
     }, {
+      icon: 'fa fa-paper-plane',
       text: 'Send via mail',  
       click: function() {
-        // some logic
+        alert('Sending a mail!');
       }
     }, {
       class: 'divider',
     }, {
-      text: 'More',
+      text: 'More...',
       children: [{
-        text: 'More information',
-        href: '#'
-      }, {
         text: 'Delete',
         href: '#'
+      }, {
+        text: 'Download...',
+        href: '#',
+        children: [{
+          text: 'Save as PDF',
+          href: '#'
+        }, {
+          text: 'Save as PNG',
+          href: '#'
+        }]
       }]
     }]
   });

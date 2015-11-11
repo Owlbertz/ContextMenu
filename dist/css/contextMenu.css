@@ -10,14 +10,10 @@
   .menu.context li {
     position: relative;
     width: 100%; }
-    .menu.context li[tabindex="0"] {
-      cursor: pointer; }
     .menu.context li.divider {
       border-bottom: 1px solid #000000;
       margin: 6px 0;
       height: 0; }
-    .menu.context li span.text {
-      padding: 3px 48px 3px 12px; }
     .menu.context li span.icon {
       padding-left: 12px; }
     .menu.context li small {

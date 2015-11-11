@@ -11,17 +11,11 @@
   li {
     position: relative;
     width: 100%;
-    
-    &[tabindex="0"] {
-      cursor: pointer;
-    }
+
     &.divider {
       border-bottom: 1px solid #000000;
       margin: 6px 0;
       height: 0;
-    }
-    span.text {
-      padding: 3px 48px 3px 12px;
     }
     span.icon {
       padding-left: 12px;
