@@ -13,6 +13,9 @@
     this.type = this.$element.attr('data-context-menu') || undefined;
     this.options = $.extend({}, ContextMenu.prototype.config, this._getConfig());
     this._init();
+    if (this.type.indexOf('#') === -1) { // currently only for menus defined via JSON
+      this._registerKeys();
+    }
     this._bindEvents();
     Foundation.registerPlugin(this);
   };
@@ -23,6 +26,7 @@
     screenOffset: 10 // min offset to the screen
   };
   ContextMenu.prototype._init = function() {
+    this.keys = {};
     this.$menu = this.type.indexOf('#') === 0 ? $(this.type) : this._getMenu();
     this._render();
   };
@@ -54,8 +58,13 @@
       if (config[it].help) {
         $a.append('<small>' + config[it].help + '</small>');
       }
-      if (config[it].click) {
-        //$li.click(config[it].click);
+      if (config[it].click && typeof config[it].click === 'function') {
+        var _this = this;
+        (function(index) {
+          $li.on('click.zf.context', function() {
+            config[index].click(_this.$element);
+          });
+        })(it);
       }
       if (config[it].href) {
         $a.attr('href', config[it].href); 
@@ -80,7 +89,7 @@
   ContextMenu.prototype._bindEvents = function() {
     var _this = this,
         touchTimeout;
-    this.$element.on('contextmenu touchstart', function(e) {
+    this.$element.on('contextmenu.zf.context touchstart.zf.context', function(e) {
       e.preventDefault();
       e.stopPropagation();
       if (e.type === 'touchstart') {
@@ -90,12 +99,12 @@
       } else { // normal click
         _this.show(e);
       }
-    }).on('touchend', function(e) {
+    }).on('touchend.zf.context', function(e) {
       if (touchTimeout) {
         clearTimeout(touchTimeout);
       }  
     });
-    $('body').on('click touchstart', function(e) {
+    $('body').on('click.zf.context touchstart.zf.context', function(e) {
       if (
         _this.open 
         && !$(e.target).is(_this.$menu.add($(_this.$menu.find('*')))) 
@@ -105,6 +114,13 @@
         )
       ) {
         _this.hide();
+      }
+    }).on('keydown.zf.context', function(e) {
+      if (_this.open) {
+        var fn = _this.keys[Foundation.Keyboard.parseKey(e)];
+        if (fn && typeof fn === 'function') {
+          fn(_this.$element);
+        }
       }
     });
     // sr support
@@ -116,6 +132,15 @@
       }).focus();
     });
   };
+  ContextMenu.prototype._registerKeys = function(config) {
+    var config = config || this.options.structure;
+    for (var c = 0; c < config.length; c++) {
+      if (config[c].key) {
+        this.keys[config[c].key] = config[c].click;
+      }
+    }
+  };
+
   ContextMenu.prototype.show = function(e) {
     var posX, posY;
     if (e && e.type === 'contextmenu') { // opened with a click event
