@@ -16,11 +16,14 @@ To configure your menus, either render them in HTML following the Foundation men
     structure: [{
       text: 'Move to',
       help: 'Alt + M',
-      href: '#'
+      key: 'ALT_M',  
+      click: function($item) {
+        alert('Moving item: ' + $item.attr('data-id'));
+      }
     }, {
       icon: 'fa fa-paper-plane',
       text: 'Send via mail',  
-      click: function() {
+      click: function($item) {
         alert('Sending a mail!');
       }
     }, {
@@ -29,16 +32,12 @@ To configure your menus, either render them in HTML following the Foundation men
       text: 'More...',
       children: [{
         text: 'Delete',
-        href: '#'
       }, {
         text: 'Download...',
-        href: '#',
         children: [{
           text: 'Save as PDF',
-          href: '#'
         }, {
           text: 'Save as PNG',
-          href: '#'
         }]
       }]
     }]
@@ -60,7 +59,8 @@ To add a context menu to one of your elements, e.g. elements within lists, simpl
 This plugin is partly accessible. To allow keyboard users to open the context menus, simply add the following buttons into your trigger elements. Elements having the `data-context-menu-trigger` attribute will trigger the context menu of their parent element when clicked.
 ```html
   <li data-context-menu="#menu">
-    Second item here <button data-context-menu-trigger class="button tiny show-on-focus pull-right">Open menu</button>
+    Second item here
+    <button data-context-menu-trigger class="button tiny show-on-focus pull-right">Open menu</button>
   </li>
 ```
 ## Touch support
