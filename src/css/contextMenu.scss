@@ -2,12 +2,15 @@
   background: #ffffff;
   border: 1px solid #000000;
   box-shadow: 0 0 6px rgba(0,0,0,0.5);
-  display: none;
   margin: 0;
   padding: 6px 0;
   position: absolute;
   width: auto !important;
 
+  &:not(.is-dropdown-submenu) {
+    display: none;
+  }
+  
   li {
     position: relative;
     width: 100%;

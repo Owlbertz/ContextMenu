@@ -9,7 +9,6 @@
 
   function ContextMenu($element) {
     this.$element = $element;
-    Foundation.FeatherNest(this.$element, 'context');
     this.type = this.$element.attr('data-context-menu') || undefined;
     this.options = $.extend({}, ContextMenu.prototype.config, this._getConfig());
     this._init();
@@ -71,9 +70,8 @@
       }
       $li.append($a);
       if (config[it].children) {
-        $li.addClass('has-submenu');
         var $subMenu = this._getMenu(config[it].children);
-        $subMenu.addClass('submenu').appendTo($li);
+        $subMenu.addClass('menu').appendTo($li);
       }
 
       if (this.options.accessible 
