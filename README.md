@@ -66,6 +66,22 @@ This plugin is partly accessible. To allow keyboard users to open the context me
 ## Touch support
 This plugin is also optimized for mobile and touch devices. You can toggle the context menu with a long-touch event, which duration can be adjusted in the plugin's options.
 
+## Installation
+To install this plugin you can either [directly download the files](https://github.com/Owlbertz/ContextMenu/archive/master.zip)
+
+or install it via NPM:
+
+```shell
+npm install foundation-contextmenu
+```
+
+In that case you can embed the files using:
+
+```html
+  <script src="node_modules/foundation-contextmenu/dist/js/contextMenu.js" type="text/javascript"></script>
+  <link rel="stylesheet" type="text/css" href="node_modules/foundation-contextmenu/dist/css/contextMenu.css" />
+```
+
 ## Demo
 Test the Context Menu on your own at the demo page!
 
