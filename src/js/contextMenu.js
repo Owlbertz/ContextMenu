@@ -45,8 +45,8 @@
     for (var it in config) {
       var $li = $('<li />'),
         $a = $('<a href="#" />');
-      if (config[it].class) {
-        $li.addClass(config[it].class);
+      if (config[it].cssClass) {
+        $li.addClass(config[it].cssClass);
       }
       if (config[it].icon) {
         $a.append('<span class="icon '+config[it].icon+'"></span>');

@@ -27,17 +27,17 @@ To configure your menus, either render them in HTML following the Foundation men
         alert('Sending a mail!');
       }
     }, {
-      class: 'divider',
+      cssClass: 'divider'
     }, {
       text: 'More...',
       children: [{
-        text: 'Delete',
+        text: 'Delete'
       }, {
         text: 'Download...',
         children: [{
-          text: 'Save as PDF',
+          text: 'Save as PDF'
         }, {
-          text: 'Save as PNG',
+          text: 'Save as PNG'
         }]
       }]
     }]
