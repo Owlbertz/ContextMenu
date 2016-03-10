@@ -2,10 +2,18 @@
 Context Menu plugin for Foundation 6.
 
 ## Usage
-To embed Context Menu into your page, you just need to include the CSS and the JS files right after the Foundation includes.
+The plugin comes in two ways, one that depends on Foundation 6 and one that works as a standalone version by having the neccessary Foundation ressources packed.
+
+To embed the Foundation dependend version of Context Menu into your page, you just need to include the CSS and the JS files right after the Foundation includes.
 ```html
-  <script src="js/contextMenu.js"></script>
-  <link rel="stylesheet" type="text/css" href="css/contextMenu.css" />
+  <script src="foundation.contextMenu.js"></script>
+  <link rel="stylesheet" type="text/css" href="foundation.contextMenu.css" />
+```
+
+When using the standalone version, just use the following snippet.
+```html
+  <script src="solo.contextMenu.js"></script>
+  <link rel="stylesheet" type="text/css" href="solo.contextMenu.css" />
 ```
 
 To configure your menus, either render them in HTML following the Foundation menu structure, or use JavaScript to register different types of context menus.
@@ -55,6 +63,14 @@ To add a context menu to one of your elements, e.g. elements within lists, simpl
   </li>
 ```
 
+Make sure to initialize Foundation, whether you use the standalone version or not by calling
+```js
+$(document).foundation();
+```
+and check out the [Foundation installation page](http://foundation.zurb.com/sites/docs/javascript.html) for more information on how to get started.
+
+
+
 ## Accessibility
 This plugin is partly accessible. To allow keyboard users to open the context menus, simply add the following buttons into your trigger elements. Elements having the `data-context-menu-trigger` attribute will trigger the context menu of their parent element when clicked.
 ```html
@@ -78,8 +94,8 @@ npm install foundation-contextmenu
 In that case you can embed the files using:
 
 ```html
-  <script src="node_modules/foundation-contextmenu/dist/js/contextMenu.js" type="text/javascript"></script>
-  <link rel="stylesheet" type="text/css" href="node_modules/foundation-contextmenu/dist/css/contextMenu.css" />
+  <script src="node_modules/foundation-contextmenu/dist/foundation.contextMenu.js" type="text/javascript"></script>
+  <link rel="stylesheet" type="text/css" href="node_modules/foundation-contextmenu/dist/foundation.contextMenu.css" />
 ```
 
 ## Demo
