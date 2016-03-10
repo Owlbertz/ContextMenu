@@ -7,62 +7,168 @@ var compressor = require('gulp-compressor');
 var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
 var path = require('path');
+var runSequence = require('run-sequence');
+var concat = require('gulp-concat');
+var babel = require('gulp-babel');
+var rimraf = require('rimraf').sync;
 
 // Defines paths
 var srcpath = 'src';
 var destpath = 'dist';
+var buildpath = 'build';
+var foundationpath = 'node_modules/foundation-sites';
+var contextpath = buildpath;
+
 
 var projectName = 'contextMenu';
+var foundationJsDeps = [
+  foundationpath + '/js/foundation.core.js',
+  foundationpath + '/js/foundation.util.*.js',
+  foundationpath + '/js/foundation.dropdownMenu.js'
+];
+
+var jsDeps = foundationJsDeps;
+jsDeps.push(destpath+'/js/foundation.contextMenu.js');
+
+var compatibility = ['last 2 versions', 'ie 10', 'Android >= 4.1'];
+
 
 /***************************************************
  * default
- *  build and deploy
- *** ************************************************/
-gulp.task('default', ['build'], function() {
-}); 
+ *  calls build
+ ***************************************************/
+gulp.task('default', ['build:all']);
+
+/***************************************************
+ * default
+ *  calls build
+ ***************************************************/
+gulp.task('build:all', function() {
+    runSequence('build:foundation', 'build:standalone');
+});
 
 
 /***************************************************
- * build
- *  1. created languages with mustache
- *  2. converts sass to css
- *  3. compresses (concats and minifies) css
- *  4. compresses (concats and uglyfies) js
- *  5. copies files that are not handled yet
+ * build:foundation
  *  output is stored in the destpath
  ***************************************************/
-gulp.task('build', ['compress-js', 'compress-css', 'copy-files'], function() {
+gulp.task('build:foundation', ['js:foundation', 'css:foundation'], function() {
 });
 
 /***************************************************
- * compress-js
+ * js:foundation
+ *  uglify and send to dist folder
  ***************************************************/
-gulp.task('compress-js', function () {
-  return gulp.src([srcpath+'/js/'+projectName+'.js'])
+gulp.task('js:foundation', function () {
+  // minified JS
+  gulp.src([srcpath+'/js/'+projectName+'.js'])
     .pipe(uglify())
-    .pipe(rename(projectName+'.min.js'))
+    .pipe(rename('foundation.'+projectName+'.min.js'))
+    .pipe(gulp.dest(destpath+'/js/'));
+
+  // unminified JS
+  gulp.src([srcpath+'/js/'+projectName+'.js'])
+    .pipe(rename('foundation.'+projectName+'.js'))
     .pipe(gulp.dest(destpath+'/js/'));
 });
 
 /***************************************************
- * compress-css
+ * scss:foundation
+ *   use sass, minify and autoprefixer and send to dist folder
  ***************************************************/
-gulp.task('compress-css', function () {
+gulp.task('scss:foundation', function () {
   return sass(srcpath+'/css/'+projectName+'.scss', {sourcemap: false})
-    .pipe(minify_css())
-    .pipe(autoprefixer({
-      browsers: ['last 2 versions', 'ie 10', 'Android >= 4.1']
-    }))
-    .pipe(rename(projectName+'.min.css'))
-    .pipe(gulp.dest(destpath+'/css/'));
+    .pipe(rename(projectName+'.css'))
+    .pipe(gulp.dest(buildpath));
 });
 
 /***************************************************
- * copy-files
+ * css:standalone
+ *   concat CSS and autoprefix, send to dist folder
  ***************************************************/
-gulp.task('copy-files', function () {
-    sass(srcpath+'/css/'+projectName+'.scss', {sourcemap: false})
-    .pipe(gulp .dest(destpath+'/css'));
-    gulp.src(srcpath+'/js/'+projectName+'.js')
-    .pipe(gulp .dest(destpath+'/js'));
+gulp.task('css:foundation', ['scss:foundation'], function () {
+  // minified CSS
+  gulp.src([buildpath+'/'+projectName+'.css'])
+  .pipe(autoprefixer({
+    browsers: compatibility
+  }))
+  .pipe(minify_css())
+  .pipe(concat('foundation.'+projectName+'.min.css'))
+  .pipe(gulp.dest(destpath));
+
+  // unminified CSS
+  gulp.src([buildpath+'/'+projectName+'.css'])
+  .pipe(autoprefixer({
+    browsers:compatibility
+  }))
+  .pipe(rename('foundation.'+projectName+'.css'))
+  .pipe(gulp.dest(destpath));
+});
+
+
+/***************************************************
+ * build:standalone
+ *  output is stored in the destpath
+ ***************************************************/
+gulp.task('build:standalone', ['css:standalone', 'js:standalone']);
+
+/***************************************************
+ * js:standalone
+ *  uglify and send to dist folder
+ ***************************************************/
+gulp.task('js:standalone', function () {
+  // minified JS
+  gulp.src(jsDeps)
+  .pipe(babel())
+  .pipe(uglify())
+  .pipe(concat('solo.'+projectName+'.min.js'))
+  .pipe(gulp.dest(destpath));
+
+  // unminified JS
+  gulp.src(jsDeps)
+  .pipe(babel())
+  .pipe(concat('solo.'+projectName+'.js'))
+  .pipe(gulp.dest(destpath));
+
+});
+
+/***************************************************
+ * scss:standalone
+ *   use sass and autoprefixer and send to dist folder
+ ***************************************************/
+gulp.task('scss:standalone', function () {
+  return sass(srcpath+'/foundation.scss', {sourcemap: false, defaultEncoding: 'UTF-8'})
+    .pipe(gulp.dest(buildpath));
+});
+
+/***************************************************
+ * css:standalone
+ *   concat CSS and autoprefix, send to dist folder
+ ***************************************************/
+gulp.task('css:standalone', ['scss:standalone'], function () {
+  // minified CSS
+  gulp.src([buildpath+'/*.css', contextpath+'/dist/css/contextMenu.css'])
+  .pipe(autoprefixer({
+    browsers: compatibility
+  }))
+  .pipe(minify_css())
+  .pipe(concat('solo.'+projectName+'.min.css'))
+  .pipe(gulp.dest(destpath));
+
+  // unminified CSS
+  gulp.src([buildpath+'/*.css', contextpath+'/dist/css/contextMenu.css'])
+  .pipe(concat('solo.'+projectName+'.css'))
+  .pipe(autoprefixer({
+    browsers:compatibility
+  }))
+  .pipe(gulp.dest(destpath));
+});
+
+/***************************************************
+ * clean
+ *  deletes the build folder
+ ***************************************************/
+gulp.task('clean', function () {
+  rimraf(buildpath);
+  rimraf(destpath);
 });
