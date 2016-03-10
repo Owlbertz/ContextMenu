@@ -16,9 +16,15 @@
 
 // Components
 @import '../node_modules/foundation-sites/scss/typography/typography';
-@import '../node_modules/foundation-sites/scss/components/dropdown-menu';
-@import '../node_modules/foundation-sites/scss/components/menu';
 
+{{#components}}
+  @import '../node_modules/foundation-sites/scss/components/{{.}}';
+{{/components}}
+
+
+// Imports
 @include foundation-typography;
-@include foundation-dropdown-menu;
-@include foundation-menu;
+
+{{#components}}
+  @include foundation-{{.}};
+{{/components}}
