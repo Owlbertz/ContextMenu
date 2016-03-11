@@ -1,6 +1,6 @@
 {
   "name": "foundation-contextmenu",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Context Menu plugin for Foundation 6.",
   "main": "foundation.contextMenu.js",
   "repository": {
