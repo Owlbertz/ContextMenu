@@ -176,5 +176,17 @@
     this.open = false;
   };
 
+  ContextMenu.prototype.destroy = function() {
+    this.$menu.hide().remove();
+
+    /**
+     * Fires when the plugin has been destroyed.
+     * @event Joyride#destroyed
+     */
+    this.$element.trigger('destroyed.zf.contextMenu');
+
+    Foundation.unregisterPlugin(this);
+  };
+
   Foundation.plugin(ContextMenu);
 })(jQuery, window.Foundation);
