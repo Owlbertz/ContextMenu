@@ -99,7 +99,7 @@
           $a.append('<span class="icon '+config[it].icon+'"></span>');
         }
         if (config[it].text) {
-          $a.text(config[it].text);
+          $a.append(config[it].text);
         }
         if (config[it].help) {
           $a.append('<small>' + config[it].help + '</small>');
