@@ -231,7 +231,7 @@
       this.open = true;
 
       /**
-       * Fires when the plugin has been destroyed.
+       * Fires when the menu is shown..
        * @event ContextMenu#show
        */
       this.$element.trigger('show.zf.contextMenu');
@@ -247,7 +247,7 @@
       this.open = false;
 
       /**
-       * Fires when the plugin has been destroyed.
+       * Fires when the menu is hidden.
        * @event ContextMenu#hide
        */
       this.$element.trigger('hide.zf.contextMenu');
