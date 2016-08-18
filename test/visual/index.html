@@ -14,37 +14,6 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="assets/foundation.contextMenu.css">
     <style type="text/css">
-      /* Demo related */
-      .list  {
-        list-style: none;
-        margin: 0 auto 10px;
-        max-width: 90%;
-        width: 300px;
-      }
-      .list li {
-        border-top: 1px solid #333333;
-        padding: 10px 5px;
-      }
-      .list li:last-child {
-        border-bottom: 1px solid #333333;
-      }
-      .context {
-        z-index: 3;
-      }
-      .context li:not(.divider):hover,
-      .context li:not(.divider) a:hover {
-        background-color: #FF0052;
-        color: #ffffff;
-      }
-      .context li:not(.divider):hover > span {
-        color: #ffffff;
-      }
-      .fa[class*="powerpoint"] {
-        color: #aa3333;
-      }
-      .fa[class*="word"] {
-        color: #3333aa;
-      }
 
       /* Page design */
       body {
@@ -77,9 +46,46 @@
       a:active, a:focus, a:hover {
         color: #F04279;
       }
-      .is-dropdown-submenu-parent.is-right-arrow > a::after {
+      .dropdown.menu.vertical > li.opens-right > a::after {
             border-color: transparent transparent transparent #CA104B;
       }
+      .dropdown.menu.vertical > li.opens-left > a::after {
+        border-color: transparent #CA104B transparent transparent;
+      }
+
+      /* Demo related */
+      .list  {
+        list-style: none;
+        margin: 0 auto 10px;
+        max-width: 90%;
+        width: 300px;
+      }
+      .list li {
+        border-top: 1px solid #333333;
+        padding: 10px 5px;
+      }
+      .list li:last-child {
+        border-bottom: 1px solid #333333;
+      }
+      .context {
+        z-index: 3;
+      }
+      .context li:not(.divider):hover,
+      .context li:not(.divider) a:hover,
+      .context li.is-active > a {
+        background-color: #FF0052;
+        color: #ffffff;
+      }
+      .context li:not(.divider):hover > span {
+        color: #ffffff;
+      }
+      .fa[class*="powerpoint"] {
+        color: #aa3333;
+      }
+      .fa[class*="word"] {
+        color: #3333aa;
+      }
+
       .button {
         background-color: #FF0052;
         color: #ffffff;
