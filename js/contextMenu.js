@@ -104,14 +104,21 @@
         if (config[it].help) {
           $a.append('<small>' + config[it].help + '</small>');
         }
-        if (config[it].click && typeof config[it].click === 'function') {
-          var _this = this;
-          (function(index) {
-            $li.on('click.zf.context', function() {
+        
+        var _this = this;
+
+        (function(index) {
+          $li.on('click.zf.context', function(e) {
+            e.preventDefault();
+            if (config[index].click && typeof config[index].click === 'function') {
               config[index].click(_this.$element);
-            });
-          })(it);
-        }
+            }
+            if (_this.options.closeOnClick) {
+              _this.hide();
+            }
+          });
+        })(it);
+
         if (config[it].href) {
           $a.attr('href', config[it].href); 
         }
@@ -296,7 +303,13 @@
      * @option
      * @example 10
      */
-    screenOffset: 10
+    screenOffset: 10,
+    /**
+     * If the menu should be closed after clicking an option.
+     * @option
+     * @example true
+     */
+    closeOnClick: true
   };
 
   ContextMenu.config = {};

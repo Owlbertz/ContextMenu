@@ -16,7 +16,7 @@
       margin: 6px 0;
       height: 0; }
     .menu.context li span.icon {
-      padding-left: 12px; }
+      margin-right: 12px; }
     .menu.context li small {
       bottom: 3px;
       color: #999999;
