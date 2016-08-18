@@ -2,7 +2,7 @@
 
   "use strict";
 
-  var FOUNDATION_VERSION = '6.2.0';
+  var FOUNDATION_VERSION = '6.2.2';
 
   // Global Foundation object
   // This is attached to the window, or used as a module for AMD/Browserify
@@ -44,7 +44,7 @@
      * @function
      * Populates the _uuids array with pointers to each individual plugin instance.
      * Adds the `zfPlugin` data-attribute to programmatically created plugins to allow use of $(selector).foundation(method) calls.
-     * Also fires the initialization event for each plugin, consolidating repeditive code.
+     * Also fires the initialization event for each plugin, consolidating repetitive code.
      * @param {Object} plugin - an instance of a plugin, usually `this` in context.
      * @param {String} name - the name of the plugin, passed as a camelCased string.
      * @fires Plugin#init
@@ -73,7 +73,7 @@
      * @function
      * Removes the plugins uuid from the _uuids array.
      * Removes the zfPlugin data attribute, as well as the data-plugin-name attribute.
-     * Also fires the destroyed event for the plugin, consolidating repeditive code.
+     * Also fires the destroyed event for the plugin, consolidating repetitive code.
      * @param {Object} plugin - an instance of a plugin, usually `this` in context.
      * @fires Plugin#destroyed
      */
@@ -417,7 +417,7 @@
       bottom = eleDims.offset.top + eleDims.height <= parDims.height + parDims.offset.top;
       top = eleDims.offset.top >= parDims.offset.top;
       left = eleDims.offset.left >= parDims.offset.left;
-      right = eleDims.offset.left + eleDims.width <= parDims.width;
+      right = eleDims.offset.left + eleDims.width <= parDims.width + parDims.offset.left;
     } else {
       bottom = eleDims.offset.top + eleDims.height <= eleDims.windowDims.height + eleDims.windowDims.offset.top;
       top = eleDims.offset.top >= eleDims.windowDims.offset.top;
@@ -560,6 +560,18 @@
           top: $eleDims.windowDims.offset.top
         };
         break;
+      case 'left bottom':
+        return {
+          left: $anchorDims.offset.left - ($eleDims.width + hOffset),
+          top: $anchorDims.offset.top + $anchorDims.height
+        };
+        break;
+      case 'right bottom':
+        return {
+          left: $anchorDims.offset.left + $anchorDims.width + hOffset - $eleDims.width,
+          top: $anchorDims.offset.top + $anchorDims.height
+        };
+        break;
       default:
         return {
           left: Foundation.rtl() ? $anchorDims.offset.left - $eleDims.width + $anchorDims.width : $anchorDims.offset.left,
@@ -638,15 +650,15 @@
       fn = functions[command];
       if (fn && typeof fn === 'function') {
         // execute function  if exists
-        fn.apply();
+        var returnValue = fn.apply();
         if (functions.handled || typeof functions.handled === 'function') {
           // execute function when event was handled
-          functions.handled.apply();
+          functions.handled(returnValue);
         }
       } else {
         if (functions.unhandled || typeof functions.unhandled === 'function') {
           // execute function when event was not handled
-          functions.unhandled.apply();
+          functions.unhandled();
         }
       }
     },
@@ -721,10 +733,12 @@
       namedQueries = parseStyleToObject(extractedStyles);
 
       for (var key in namedQueries) {
-        self.queries.push({
-          name: key,
-          value: 'only screen and (min-width: ' + namedQueries[key] + ')'
-        });
+        if (namedQueries.hasOwnProperty(key)) {
+          self.queries.push({
+            name: key,
+            value: 'only screen and (min-width: ' + namedQueries[key] + ')'
+          });
+        }
       }
 
       this.current = this._getCurrentSize();
@@ -758,8 +772,10 @@
      */
     get: function (size) {
       for (var i in this.queries) {
-        var query = this.queries[i];
-        if (size === query.name) return query.value;
+        if (this.queries.hasOwnProperty(i)) {
+          var query = this.queries[i];
+          if (size === query.name) return query.value;
+        }
       }
 
       return null;
@@ -775,7 +791,7 @@
     _getCurrentSize: function () {
       var matched;
 
-      for (var i in this.queries) {
+      for (var i = 0; i < this.queries.length; i++) {
         var query = this.queries[i];
 
         if (window.matchMedia(query.value).matches) {
@@ -800,14 +816,15 @@
       var _this = this;
 
       $(window).on('resize.zf.mediaquery', function () {
-        var newSize = _this._getCurrentSize();
+        var newSize = _this._getCurrentSize(),
+            currentSize = _this.current;
 
-        if (newSize !== _this.current) {
-          // Broadcast the media query change on the window
-          $(window).trigger('changed.zf.mediaquery', [newSize, _this.current]);
-
+        if (newSize !== currentSize) {
           // Change the current media query
           _this.current = newSize;
+
+          // Broadcast the media query change on the window
+          $(window).trigger('changed.zf.mediaquery', [newSize, currentSize]);
         }
       });
     }
@@ -1256,7 +1273,7 @@
 			    simulatedEvent;
 
 			if ('MouseEvent' in window && typeof window.MouseEvent === 'function') {
-				simulatedEvent = window.MouseEvent(type, {
+				simulatedEvent = new window.MouseEvent(type, {
 					'bubbles': true,
 					'cancelable': true,
 					'screenX': first.screenX,
@@ -1810,7 +1827,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         this.$tabs = this.$element.children('[role="menuitem"]');
         this.$tabs.find('ul.is-dropdown-submenu').addClass(this.options.verticalClass);
 
-        if (this.$element.hasClass(this.options.rightClass) || this.options.alignment === 'right' || Foundation.rtl()) {
+        if (this.$element.hasClass(this.options.rightClass) || this.options.alignment === 'right' || Foundation.rtl() || this.$element.parents('.top-bar-right').is('*')) {
           this.options.alignment = 'right';
           subs.addClass('opens-left');
         } else {
@@ -1832,37 +1849,39 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             hasTouch = 'ontouchstart' in window || typeof window.ontouchstart !== 'undefined',
             parClass = 'is-dropdown-submenu-parent';
 
-        if (this.options.clickOpen || hasTouch) {
-          this.$menuItems.on('click.zf.dropdownmenu touchstart.zf.dropdownmenu', function (e) {
-            var $elem = $(e.target).parentsUntil('ul', '.' + parClass),
-                hasSub = $elem.hasClass(parClass),
-                hasClicked = $elem.attr('data-is-click') === 'true',
-                $sub = $elem.children('.is-dropdown-submenu');
+        // used for onClick and in the keyboard handlers
+        var handleClickFn = function (e) {
+          var $elem = $(e.target).parentsUntil('ul', '.' + parClass),
+              hasSub = $elem.hasClass(parClass),
+              hasClicked = $elem.attr('data-is-click') === 'true',
+              $sub = $elem.children('.is-dropdown-submenu');
 
-            if (hasSub) {
-              if (hasClicked) {
-                if (!_this.options.closeOnClick || !_this.options.clickOpen && !hasTouch || _this.options.forceFollow && hasTouch) {
-                  return;
-                } else {
-                  e.stopImmediatePropagation();
-                  e.preventDefault();
-                  _this._hide($elem);
-                }
+          if (hasSub) {
+            if (hasClicked) {
+              if (!_this.options.closeOnClick || !_this.options.clickOpen && !hasTouch || _this.options.forceFollow && hasTouch) {
+                return;
               } else {
-                e.preventDefault();
                 e.stopImmediatePropagation();
-                _this._show($elem.children('.is-dropdown-submenu'));
-                $elem.add($elem.parentsUntil(_this.$element, '.' + parClass)).attr('data-is-click', true);
+                e.preventDefault();
+                _this._hide($elem);
               }
             } else {
-              return;
+              e.preventDefault();
+              e.stopImmediatePropagation();
+              _this._show($elem.children('.is-dropdown-submenu'));
+              $elem.add($elem.parentsUntil(_this.$element, '.' + parClass)).attr('data-is-click', true);
             }
-          });
+          } else {
+            return;
+          }
+        };
+
+        if (this.options.clickOpen || hasTouch) {
+          this.$menuItems.on('click.zf.dropdownmenu touchstart.zf.dropdownmenu', handleClickFn);
         }
 
         if (!this.options.disableHover) {
           this.$menuItems.on('mouseenter.zf.dropdownmenu', function (e) {
-            e.stopImmediatePropagation();
             var $elem = $(this),
                 hasSub = $elem.hasClass(parClass);
 
@@ -1903,16 +1922,21 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           });
 
           var nextSibling = function () {
-            if (!$element.is(':last-child')) $nextElement.children('a:first').focus();
+            if (!$element.is(':last-child')) {
+              $nextElement.children('a:first').focus();
+              e.preventDefault();
+            }
           },
               prevSibling = function () {
             $prevElement.children('a:first').focus();
+            e.preventDefault();
           },
               openSub = function () {
             var $sub = $element.children('ul.is-dropdown-submenu');
             if ($sub.length) {
               _this._show($sub);
               $element.find('li > a:first').focus();
+              e.preventDefault();
             } else {
               return;
             }
@@ -1922,6 +1946,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             var close = $element.parent('ul').parent('li');
             close.children('a:first').focus();
             _this._hide(close);
+            e.preventDefault();
             //}
           };
           var functions = {
@@ -1929,15 +1954,15 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             close: function () {
               _this._hide(_this.$element);
               _this.$menuItems.find('a:first').focus(); // focus to first element
+              e.preventDefault();
             },
             handled: function () {
-              e.preventDefault();
               e.stopImmediatePropagation();
             }
           };
 
           if (isTab) {
-            if (_this.vertical) {
+            if (_this.$element.hasClass(_this.options.verticalClass)) {
               // vertical menu
               if (_this.options.alignment === 'left') {
                 // left aligned
@@ -2229,6 +2254,7 @@ function _classCallCheck(instance, Constructor) {
    */
 
   var ContextMenu = function () {
+
     /**
      * Creates a new instance of ContextMenu.
      * @class
@@ -2241,8 +2267,7 @@ function _classCallCheck(instance, Constructor) {
 
       this.$element = element;
       this.type = this.$element.attr('data-context-menu') || undefined;
-      this.config = {};
-      this.options = $.extend({}, this.config, this._getConfig());
+      this.options = $.extend({}, ContextMenu.config, ContextMenu.defaults, options, this._getConfig());
       this._init();
       if (this.type.indexOf('#') === -1) {
         // currently only for menus defined via JSON
@@ -2285,7 +2310,7 @@ function _classCallCheck(instance, Constructor) {
        * @return {Object} config
        */
       value: function _getConfig() {
-        return this.config[this.type];
+        return ContextMenu.config[this.type];
       }
     }, {
       key: 'addConfig',
@@ -2296,7 +2321,7 @@ function _classCallCheck(instance, Constructor) {
        * @param {String} config Value of the config.
        */
       value: function addConfig(type, config) {
-        this.config[type] = config;
+        ContextMenu.config[type] = config;
       }
     }, {
       key: '_getMenu',
@@ -2527,6 +2552,8 @@ function _classCallCheck(instance, Constructor) {
      */
     screenOffset: 10
   };
+
+  ContextMenu.config = {};
 
   // Window exports
   Foundation.plugin(ContextMenu, 'ContextMenu');

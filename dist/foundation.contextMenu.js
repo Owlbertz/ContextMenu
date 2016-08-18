@@ -29,6 +29,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
    */
 
   var ContextMenu = function () {
+
     /**
      * Creates a new instance of ContextMenu.
      * @class
@@ -41,8 +42,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
       this.$element = element;
       this.type = this.$element.attr('data-context-menu') || undefined;
-      this.config = {};
-      this.options = $.extend({}, this.config, this._getConfig());
+      this.options = $.extend({}, ContextMenu.config, ContextMenu.defaults, options, this._getConfig());
       this._init();
       if (this.type.indexOf('#') === -1) {
         // currently only for menus defined via JSON
@@ -88,7 +88,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
        * @return {Object} config
        */
       value: function _getConfig() {
-        return this.config[this.type];
+        return ContextMenu.config[this.type];
       }
     }, {
       key: 'addConfig',
@@ -100,7 +100,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
        * @param {String} config Value of the config.
        */
       value: function addConfig(type, config) {
-        this.config[type] = config;
+        ContextMenu.config[type] = config;
       }
     }, {
       key: '_getMenu',
@@ -337,6 +337,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
      */
     screenOffset: 10
   };
+
+  ContextMenu.config = {};
 
   // Window exports
   Foundation.plugin(ContextMenu, 'ContextMenu');
