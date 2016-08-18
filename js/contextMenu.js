@@ -23,6 +23,7 @@
    * @requires foundation.Reveal
    */
   class ContextMenu {
+
     /**
      * Creates a new instance of ContextMenu.
      * @class
@@ -32,8 +33,7 @@
     constructor(element, options) {
       this.$element = element;
       this.type = this.$element.attr('data-context-menu') || undefined;
-      this.config = {};
-      this.options = $.extend({}, this.config, this._getConfig());
+      this.options = $.extend({}, ContextMenu.config, ContextMenu.defaults, options, this._getConfig());
       this._init();
       if (this.type.indexOf('#') === -1) { // currently only for menus defined via JSON
         this._registerKeys();
@@ -68,7 +68,7 @@
      * @return {Object} config
      */
     _getConfig() {
-      return this.config[this.type];
+      return ContextMenu.config[this.type];
     };
 
     /**
@@ -77,7 +77,7 @@
      * @param {String} config Value of the config.
      */
     addConfig(type, config) {
-      this.config[type] = config;
+      ContextMenu.config[type] = config;
     };
 
     /**
@@ -298,6 +298,8 @@
      */
     screenOffset: 10
   };
+
+  ContextMenu.config = {};
 
   // Window exports
   Foundation.plugin(ContextMenu, 'ContextMenu');
