@@ -134,7 +134,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           var _this = this;
 
           (function (index) {
-            $li.on('click.zf.context', function (e) {
+            $li.on('click.zf.contextmenu', function (e) {
               e.preventDefault();
               if (config[index].click && typeof config[index].click === 'function') {
                 config[index].click(_this.$element);
@@ -174,7 +174,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       value: function _bindEvents() {
         var _this = this,
             touchTimeout;
-        this.$element.on('contextmenu.zf.context touchstart.zf.context', function (e) {
+        this.$element.on('contextmenu.zf.contextmenu touchstart.zf.contextmenu', function (e) {
           e.preventDefault();
           e.stopPropagation();
           if (e.type === 'touchstart') {
@@ -185,16 +185,16 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             // normal click
             _this.show(e);
           }
-        }).on('touchend.zf.context', function (e) {
+        }).on('touchend.zf.contextmenu', function (e) {
           if (touchTimeout) {
             clearTimeout(touchTimeout);
           }
         });
-        $('body').on('click.zf.context touchstart.zf.context', function (e) {
+        $('body').on('click.zf.contextmenu touchstart.zf.contextmenu', function (e) {
           if (_this.open && !$(e.target).is(_this.$menu.add($(_this.$menu.find('*')))) && (!($(e.target).is(_this.$element) && e.button === 3) || e.type === 'touchstart')) {
             _this.hide();
           }
-        }).on('keydown.zf.context', function (e) {
+        }).on('keydown.zf.contextmenu', function (e) {
           if (_this.open) {
             var fn = _this.keys[Foundation.Keyboard.parseKey(e)];
             if (fn && typeof fn === 'function') {
@@ -271,7 +271,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
          * Fires when the menu is shown..
          * @event ContextMenu#show
          */
-        this.$element.trigger('show.zf.contextMenu');
+        this.$element.trigger('show.zf.contextmenu');
       }
     }, {
       key: 'hide',
@@ -290,7 +290,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
          * Fires when the menu is hidden.
          * @event ContextMenu#hide
          */
-        this.$element.trigger('hide.zf.contextMenu');
+        this.$element.trigger('hide.zf.contextmenu');
       }
     }, {
       key: 'destroy',
@@ -307,7 +307,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
          * Fires when the plugin has been destroyed.
          * @event ContextMenu#destroyed
          */
-        this.$element.trigger('destroyed.zf.contextMenu');
+        this.$element.trigger('destroyed.zf.contextmenu');
 
         Foundation.unregisterPlugin(this);
       }
