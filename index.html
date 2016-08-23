@@ -233,7 +233,7 @@
                       <li role="menuitem"><a data-option="moving" href>Move</a></li>
                       <li role="menuitem"><a data-option="delete" href>Delete</a></li>
                     </ul>
-                    <ul class="list" id="html-example">
+                    <ul class="list" id="html-example-list">
                       <li data-context-menu="#menu" data-element="1">
                         <span class="fa fa-file-pdf-o"></span> Some document
                         <button data-context-menu-trigger class="button tiny show-on-focus float-right">Open menu</button>
@@ -266,7 +266,7 @@
                 </p>
                 <div class="row">
                   <div class="columns small-12 large-4">
-                    <ul class="list" id="json-example">
+                    <ul class="list" id="json-example-list">
                       <li data-context-menu="listitem">
                         <span class="fa fa-file-pdf-o"></span> Some document
                         <button data-context-menu-trigger class="button tiny show-on-focus float-right">Open menu</button>
@@ -317,6 +317,17 @@
                   </div>
                 </div>
               </div>
+              <div class="columns small-12" data-magellan-target="interacting" id="interacting">
+                <hr />
+                <h2>Interacting</h2>
+                <p>
+                  To actually do something with the user's interaction, you can use the custom <code>contextselect.zf.contextmenu</code>-event. This will be triggered for the menu's anchor element (i.e. the element containing the <code>data-context-menu</code>-attribute) once an option out of the context menu is chosen. The event carries an object of data that helps you handling the selection:
+                </p>
+                <ul>
+                  <li><code>element</code>: The menu's anchor element (<code>li</code>-element).</li>
+                  <li><code>option</code>: The selected context menu entry (<code>a</code>-element).</li>
+                </ul>
+              </div>
             </div>
           </div>
           <div class="columns small-12 medium-3" data-sticky-container>
@@ -325,6 +336,7 @@
                 <li><a href="#introduction">Introduction</a></li>
                 <li><a href="#html-example">HTML Example</a></li>
                 <li><a href="#json-example">JSON Example</a></li>
+                <li><a href="#interacting">Interacting</a></li>
               </ul>
             </nav>  
           </div>
@@ -378,7 +390,7 @@
       });
 
       $(function() {
-        $('#html-example [data-context-menu]').on('contextselect.zf.contextmenu', function(e, data) {
+        $('#html-example-list [data-context-menu]').on('contextselect.zf.contextmenu', function(e, data) {
           var element = data.element.attr('data-element'),
               option = data.option.attr('data-option');
 
