@@ -63,7 +63,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
        */
       value: function _init() {
         this.keys = {};
-        this.$menu = this.type.indexOf('#') === 0 ? $(this.type) : this._getMenu();
+        this.$menu = this.type.indexOf('#') === 0 ? $(this.type).clone().appendTo('body') : this._getMenu();
         this._render();
       }
     }, {
@@ -134,12 +134,22 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           var _this = this;
 
           (function (index) {
-            $li.on('click.zf.contextmenu', function (e) {
+            $a.on('click.zf.contextmenu', function (e) {
               e.preventDefault();
+              e.stopPropagation();
               if (config[index].click && typeof config[index].click === 'function') {
+                // For defined functions, execute them
                 config[index].click(_this.$element);
               }
+
+              // Emit event about selected item
+              _this.$element.trigger('contextselect.zf.contextmenu', {
+                element: _this.$element,
+                option: $(this)
+              });
+
               if (_this.options.closeOnClick) {
+                // Hide context menu
                 _this.hide();
               }
             });
@@ -190,11 +200,33 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             clearTimeout(touchTimeout);
           }
         });
+
+        // For HTML based context menus, handle clicks on context menu items
+        if (this.type.indexOf('#') !== -1) {
+          this.$menu.find('a').on('click.zf.contextmenu', function (e) {
+            e.stopPropagation();
+            if ($(this).attr('href') === '') {
+              // For non-navigating links, emit custom event with additional data
+              e.preventDefault();
+              _this.$element.trigger('contextselect.zf.contextmenu', {
+                element: _this.$element,
+                option: $(this)
+              });
+            }
+            if (_this.options.closeOnClick) {
+              // Hide context menu
+              _this.hide();
+            }
+          });
+        }
+
+        // Handle closing the context menu on outside click
         $('body').on('click.zf.contextmenu touchstart.zf.contextmenu', function (e) {
           if (_this.open && !$(e.target).is(_this.$menu.add($(_this.$menu.find('*')))) && (!($(e.target).is(_this.$element) && e.button === 3) || e.type === 'touchstart')) {
             _this.hide();
           }
         }).on('keydown.zf.contextmenu', function (e) {
+          // If keyboard shortcuts are defined, handle them
           if (_this.open) {
             var fn = _this.keys[Foundation.Keyboard.parseKey(e)];
             if (fn && typeof fn === 'function') {
@@ -202,8 +234,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             }
           }
         });
-        // sr support
-        this.$element.find('[data-context-menu-trigger]').click(function (e) {
+
+        // SR support, open context menu on trigger click
+        this.$element.find('[data-context-menu-trigger]').on('click.zf.contextmenu', function (e) {
           e.stopPropagation();
           _this.show();
           _this.$menu.attr({
@@ -237,6 +270,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
        * @fires ContextMenu#show
        */
       value: function show(e) {
+        // Close other context menus
+        if (this.options.single) {
+          $('body').trigger('click.zf.contextmenu');
+        }
+
         var posX, posY;
         if (e && e.type === 'contextmenu') {
           // opened with a click event
@@ -261,9 +299,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           left: posX
         });
 
-        if (this.options.single) {
-          $('body').trigger('click');
-        }
         this.$menu.css('visibility', '');
         this.open = true;
 

@@ -229,20 +229,20 @@
                 <div class="row">
                   <div class="columns small-12 large-4">
                     <ul class="context menu dropdown vertical" role="menu" id="menu">
-                      <li role="menuitem"><a href="javascript:alert('Copying...');">Copy</a></li>
-                      <li role="menuitem"><a href="javascript:alert('Moving...');">Move</a></li>
-                      <li role="menuitem"><a href="javascript:alert('Deleting...');">Delete</a></li>
+                      <li role="menuitem"><a data-option="copy" href>Copy</a></li>
+                      <li role="menuitem"><a data-option="moving" href>Move</a></li>
+                      <li role="menuitem"><a data-option="delete" href>Delete</a></li>
                     </ul>
-                    <ul class="list">
-                      <li data-context-menu="#menu">
+                    <ul class="list" id="html-example">
+                      <li data-context-menu="#menu" data-element="1">
                         <span class="fa fa-file-pdf-o"></span> Some document
                         <button data-context-menu-trigger class="button tiny show-on-focus float-right">Open menu</button>
                       </li>
-                      <li data-context-menu="#menu">
+                      <li data-context-menu="#menu" data-element="2">
                         <span class="fa fa-file-word-o"></span> Another document
                         <button data-context-menu-trigger class="button tiny show-on-focus float-right">Open menu</button>
                       </li>
-                      <li data-context-menu="#menu">
+                      <li data-context-menu="#menu" data-element="3">
                         <span class="fa fa-file-powerpoint-o"></span> Important presentation
                         <button data-context-menu-trigger class="button tiny show-on-focus float-right">Open menu</button>
                       </li>
@@ -266,12 +266,7 @@
                 </p>
                 <div class="row">
                   <div class="columns small-12 large-4">
-                    <ul class="context menu dropdown vertical" role="menu" id="menu">
-                      <li role="menuitem"><a href="#">Copy</a></li>
-                      <li role="menuitem"><a href="#">Move</a></li>
-                      <li role="menuitem"><a href="#">Delete</a></li>
-                    </ul>
-                    <ul class="list">
+                    <ul class="list" id="json-example">
                       <li data-context-menu="listitem">
                         <span class="fa fa-file-pdf-o"></span> Some document
                         <button data-context-menu-trigger class="button tiny show-on-focus float-right">Open menu</button>
@@ -381,6 +376,16 @@
           }]
         }]
       });
+
+      $(function() {
+        $('#html-example [data-context-menu]').on('contextselect.zf.contextmenu', function(e, data) {
+          var element = data.element.attr('data-element'),
+              option = data.option.attr('data-option');
+
+          alert('Performing action: ' + option + ' on item ' + element);
+        });
+      });
+
       // initialize Foundation
       $(document).foundation();
     </script>
