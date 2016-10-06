@@ -1,0 +1,479 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Context Menu by Owlbertz</title>
+    <meta name="viewport" content="width=device-width">
+    <meta class="foundation-mq">
+    <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" href="assets/foundation-sites/dist/foundation.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/foundation.contextMenu.css">
+    <style type="text/css">
+
+      /* Page design */
+      body {
+        background-color: #FF0052;
+      }
+      header {
+        box-shadow: 0 3px 5px rgba(0,0,0,0.5);
+        border-bottom: 2px solid #CA104B
+      }
+      footer {
+        box-shadow: 0 -3px 5px rgba(0,0,0,0.5);
+        border-top: 2px solid #CA104B
+        font-size: 0.8em;
+        text-align: center;
+      }
+      header, footer {
+        color: #ffffff;
+        padding: 10px 0;
+        position: relative;
+        text-shadow: 1px 1px rgba(33,33,33,0.5);
+        z-index: 2;
+      }
+      header p {
+        font-size: 1.6rem;
+        line-height: 1.2em;
+      }
+      a {
+        color: #CA104B;
+      }
+      a:active, a:focus, a:hover {
+        color: #F04279;
+      }
+      .dropdown.menu.vertical > li.opens-right > a::after {
+            border-color: transparent transparent transparent #CA104B;
+      }
+      .dropdown.menu.vertical > li.opens-left > a::after {
+        border-color: transparent #CA104B transparent transparent;
+      }
+
+      /* Demo related */
+      .list  {
+        list-style: none;
+        margin: 0 auto 10px;
+        max-width: 90%;
+        width: 300px;
+      }
+      .list li {
+        border-top: 1px solid #333333;
+        padding: 10px 5px;
+      }
+      .list li:last-child {
+        border-bottom: 1px solid #333333;
+      }
+      .context {
+        z-index: 3;
+      }
+      .context li:not(.divider):hover,
+      .context li:not(.divider) a:hover,
+      .context li.is-active > a {
+        background-color: #FF0052;
+        color: #ffffff;
+      }
+      .context li:not(.divider):hover > span {
+        color: #ffffff;
+      }
+      .fa[class*="powerpoint"] {
+        color: #aa3333;
+      }
+      .fa[class*="word"] {
+        color: #3333aa;
+      }
+
+      .button {
+        background-color: #FF0052;
+        color: #ffffff;
+      }
+      .button:focus, .button:hover {
+        background-color: #F04279;
+      }
+
+      header a, footer a {
+        color: #ffffff;
+        text-decoration: underline;
+      }
+      header a:hover, header a:active, header a:focus, 
+      footer a:hover, footer a:active, footer a:focus  {
+        color: #ffffff;
+        text-decoration: none;
+      }
+      main {
+        background-color: #ffffff;
+        padding: 40px 0;
+      }
+      .side-nav .active {
+        background-color: #FF0052;
+        border-radius: 3px;
+        color: #ffffff;
+      }
+      /* Code highlighting */
+      .hljs {
+        display: block;
+        overflow-x: auto;
+        padding: 0.5em;
+        font-size: 0.8em;
+        color: #333;
+        background: #f8f8f8;
+        margin-bottom: 10px;
+        -webkit-text-size-adjust: none; }
+
+        .hljs-comment,
+        .diff .hljs-header,
+        .hljs-javadoc {
+          color: #998;
+          font-style: italic; }
+
+        .hljs-keyword,
+        .css .rule .hljs-keyword,
+        .hljs-winutils,
+        .nginx .hljs-title,
+        .hljs-subst,
+        .hljs-request,
+        .hljs-status {
+          color: #333;
+          font-weight: bold; }
+
+        .hljs-number,
+        .hljs-hexcolor,
+        .ruby .hljs-constant {
+          color: #008080; }
+
+        .hljs-string,
+        .hljs-tag .hljs-value,
+        .hljs-phpdoc,
+        .hljs-dartdoc,
+        .tex .hljs-formula {
+          color: #CA104B; }
+
+        .hljs-title,
+        .hljs-id,
+        .scss .hljs-preprocessor {
+          color: #900;
+          font-weight: bold; }
+
+        .hljs-list .hljs-keyword,
+        .hljs-subst {
+          font-weight: normal; }
+
+        .hljs-class .hljs-title,
+        .hljs-type,
+        .vhdl .hljs-literal,
+        .tex .hljs-command {
+          color: #458;
+          font-weight: bold; }
+
+        .hljs-tag,
+        .hljs-tag .hljs-title,
+        .hljs-rule .hljs-property,
+        .django .hljs-tag .hljs-keyword {
+          color: #000080;
+          font-weight: normal; }
+
+        .hljs-attribute,
+        .hljs-variable,
+        .lisp .hljs-body,
+        .hljs-name {
+          color: #008080; }
+
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <div class="row">
+          <div class="columns small-3">
+           <img src="assets/context-menu.svg" alt="Context Menu Plugin Icon"/>
+          </div>
+          <div class="columns small-9">
+            <h1>Context Menu</h1>
+            <p>
+              Context Menu plugin for Foundation 6.
+            </p>
+          </div>
+        </div>
+      </header>
+      <main id="main" class="sections">
+        <div class="row">
+          <div class="columns small-12 medium-9" data-magellan-target="introduction" id="introduction">
+            <div class="row">
+              <div class="columns small-12">
+                <h2>What it does</h2>
+                <p>
+                  The following examples show the Context Menu plugin in action. Just make a right-click as you are used to in your faviourite OS. The first list item has a context menu defined as a JSON object and passed to the plugin within the JavaScrip. The second one has a menu defined in the HTML accordion to the menu structure for the Foundation DropdownMenu.
+                </p>
+                <p>
+                  For the basic setup, just take any HTML element you want and add an <code>data-context-menu</code> attribute to it. The value depends on the way you want to use this plugin. The possibilities can be found below.
+                </p>
+                <p>
+                  For further information please visit <a href="https://github.com/Owlbertz/ContextMenu">the Project on GitHub</a>.
+                </p>
+                <p>
+                  Currently this plugin is still in development, and thus in a version 0.0.x, which works well with Foundation for sites 6.2.3. It is planned to release the first stable version of this plugin once Foundation for sites version 6.3 is released.
+                </p>
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="columns small-12" id="html-example" data-magellan-target="html-example">
+                <hr />
+                <h2>HTML Example</h2>
+                <p>
+                  This example uses a predefined HTML list, formed according to <a href="http://foundation.zurb.com/sites/docs/dropdown-menu.html" target="_blank">the Foundation Dropdown  Menu syntax</a> to hold the context menu. You only need to give your context menu list an ID and then reference it in the list's <code>data-context-menu</code> attribute. Notice the leading <code>#</code> to indicate that it points to an HTML element.
+                </p>
+                <div class="row">
+                  <div class="columns small-12 large-4">
+                    <ul class="context menu dropdown vertical" role="menu" id="menu">
+                      <li role="menuitem"><a data-option="copy" href>Copy</a></li>
+                      <li role="menuitem"><a data-option="moving" href>Move</a></li>
+                      <li role="menuitem"><a data-option="delete" href>Delete</a></li>
+                    </ul>
+                    <ul class="list" id="html-example-list">
+                      <li data-context-menu="#menu" data-element="1">
+                        <span class="fa fa-file-pdf-o"></span> Some document
+                        <button data-context-menu-trigger class="button tiny show-on-focus float-right">Open menu</button>
+                      </li>
+                      <li data-context-menu="#menu" data-element="2">
+                        <span class="fa fa-file-word-o"></span> Another document
+                        <button data-context-menu-trigger class="button tiny show-on-focus float-right">Open menu</button>
+                      </li>
+                      <li data-context-menu="#menu" data-element="3">
+                        <span class="fa fa-file-powerpoint-o"></span> Important presentation
+                        <button data-context-menu-trigger class="button tiny show-on-focus float-right">Open menu</button>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="columns small-12 large-8">
+<pre><code class="html hljs"><span class="hljs-tag">&lt;<span class="hljs-name">ul</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"context menu dropdown vertical"</span> <span class="hljs-attr">role</span>=<span class="hljs-string">"menu"</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"menu"</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">role</span>=<span class="hljs-string">"menuitem"</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"javascript:alert('Copying...');"</span>&gt;</span>Copy<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">role</span>=<span class="hljs-string">"menuitem"</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"javascript:alert('Moving...');"</span>&gt;</span>Move<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">role</span>=<span class="hljs-string">"menuitem"</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"javascript:alert('Deleting...');"</span>&gt;</span>Delete<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span></code></pre>
+                  </div>
+                </div>
+              </div>
+
+              <div class="columns small-12" id="json-example" data-magellan-target="json-example">
+                <hr />
+                <h2>JSON Example</h2>
+                <p>
+                  You can also define the context menu using JSON. Just register the menu type in the plugin and then reference the registered name in the list's <code>data-context-menu</code> attribute.
+                </p>
+                <div class="row">
+                  <div class="columns small-12 large-4">
+                    <ul class="list" id="json-example-list">
+                      <li data-context-menu="listitem">
+                        <span class="fa fa-file-pdf-o"></span> Some document
+                        <button data-context-menu-trigger class="button tiny show-on-focus float-right">Open menu</button>
+                      </li>
+                      <li data-context-menu="listitem">
+                        <span class="fa fa-file-pdf-o"></span> Another document
+                        <button data-context-menu-trigger class="button tiny show-on-focus float-right">Open menu</button>
+                      </li>
+                      <li data-context-menu="listitem">
+                        <span class="fa fa-file-powerpoint-o"></span> Important presentation
+                        <button data-context-menu-trigger class="button tiny show-on-focus float-right">Open menu</button>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="columns small-12 large-8">
+<pre><code class="js hljs">Foundation.ContextMenu.prototype.addConfig(<span class="hljs-string">'listitem'</span>, {
+  accessible: <span class="hljs-literal">true</span>,
+  single: <span class="hljs-literal">true</span>,
+  structure: [{
+    text: <span class="hljs-string">'Move to'</span>,
+    help: <span class="hljs-string">'Alt + M'</span>,
+    key: <span class="hljs-string">'ALT_M'</span>,  
+    click: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">$item</span>) </span>{
+      alert(<span class="hljs-string">'Moving item: '</span> + $item.index());
+    }
+  }, {
+    icon: <span class="hljs-string">'fa fa-paper-plane'</span>,
+    text: <span class="hljs-string">'Send via mail'</span>,  
+    click: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">$item</span>) </span>{
+      alert(<span class="hljs-string">'Sending a mail!'</span>);
+    }
+  }, {
+    cssclass: <span class="hljs-string">'divider'</span>
+  }, {
+    text: <span class="hljs-string">'More...'</span>,
+    children: [{
+      text: <span class="hljs-string">'Delete'</span>
+    }, {
+      text: <span class="hljs-string">'Download...'</span>,
+      children: [{
+        text: <span class="hljs-string">'Save as PDF'</span>
+      }, {
+        text: <span class="hljs-string">'Save as PNG'</span>
+      }]
+    }]
+  }]
+});</code></pre>
+                  </div>
+                </div>
+              </div>
+              <div class="columns small-12" id="javascript-example" data-magellan-target="javascript-example">
+                <hr />
+                <h2>Creating Context Menus with JS</h2>
+                <p>
+                  It is also possible to open context menus on the fly without attaching them to an actual HTML element. This approach is based on the JSON method shown above. Creating the plugin instance on demand might me helpful when dealing with dynamic applications that keep on re-rendering parts of the page.
+                </p>
+                <div class="row">
+                  <div class="columns small-12 large-4">
+                    <ul class="list" id="javascript-example-list">
+                      <li>
+                        <span class="fa fa-file-pdf-o"></span> Some document
+                      </li>
+                      <li>
+                        <span class="fa fa-file-pdf-o"></span> Another document
+                      </li>
+                      <li>
+                        <span class="fa fa-file-powerpoint-o"></span> Important presentation
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="columns small-12 large-8">
+<pre><code class="hljs js">$(<span class="hljs-string">'#javascript-example-list li'</span>).on(<span class="hljs-string">'contextmenu'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">event</span>) </span>{
+  event.preventDefault();
+
+  <span class="hljs-keyword">var</span> jsContextMenu = <span class="hljs-keyword">new</span> Foundation.ContextMenu($(<span class="hljs-keyword">this</span>), {
+    <span class="hljs-attr">position</span>: event,
+    <span class="hljs-attr">structure</span>: [{
+      <span class="hljs-attr">text</span>: <span class="hljs-string">'Move to'</span>,
+      <span class="hljs-attr">click</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">$item</span>) </span>{
+        alert(<span class="hljs-string">'Moving item: '</span> + $item.index());
+      }
+    }, {
+      <span class="hljs-attr">icon</span>: <span class="hljs-string">'fa fa-paper-plane'</span>,
+      <span class="hljs-attr">text</span>: <span class="hljs-string">'Send via mail'</span>,  
+      <span class="hljs-attr">click</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">$item</span>) </span>{
+        alert(<span class="hljs-string">'Sending a mail!'</span>);
+      }
+    }]
+  });
+  <span class="hljs-comment">// Destroy context menu once it's closed</span>
+  $(<span class="hljs-keyword">this</span>).one(<span class="hljs-string">'hide.zf.contextmenu'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+    jsContextMenu.destroy();
+  });
+});</code></pre>
+                  </div>
+                </div>
+              </div>
+              <div class="columns small-12" data-magellan-target="interacting" id="interacting">
+                <hr />
+                <h2>Interacting</h2>
+                <p>
+                  To actually do something with the user's interaction, you can use the custom <code>contextselect.zf.contextmenu</code>-event. This will be triggered for the menu's anchor element (i.e. the element containing the <code>data-context-menu</code>-attribute) once an option out of the context menu is chosen. The event carries an object of data that helps you handling the selection:
+                </p>
+                <ul>
+                  <li><code>element</code>: The menu's anchor element (<code>li</code>-element).</li>
+                  <li><code>option</code>: The selected context menu entry (<code>a</code>-element).</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="columns small-12 medium-3" data-sticky-container>
+            <nav class="columns sticky" data-sticky data-anchor="main" data-sticky-on="medium">
+              <ul class="vertical menu side-nav" data-magellan>
+                <li><a href="#introduction">Introduction</a></li>
+                <li><a href="#html-example">HTML Example</a></li>
+                <li><a href="#json-example">JSON Example</a></li>
+                <li><a href="#javascript-example">JavaScript Example</a></li>
+                <li><a href="#interacting">Interacting</a></li>
+              </ul>
+            </nav>  
+          </div>
+        </div>
+      </main>
+      <footer>
+        <div class="row">
+          <div class="columns small-12">
+            <p>This project is maintained by <a href="https://github.com/Owlbertz">Marius Olbertz</a>.
+            <br />This demo makes use of <a href="http://fortawesome.github.io/Font-Awesome/" target="_blank">Font Awesome</a>.</p>
+          </div>
+        </div>
+      </footer>
+    </div>
+    <script src="assets/jquery/dist/jquery.js" type="text/javascript"></script>
+    <script src="assets/foundation-sites/dist/foundation.js" type="text/javascript"></script>
+    <script src="assets/foundation.contextMenu.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      // Provide structure for first menu item
+      Foundation.ContextMenu.prototype.addConfig('listitem', {
+        accessible: true,
+        single: true,
+        structure: [{
+          text: 'Move to',
+          help: 'Alt + M',
+          key: 'ALT_M',  
+          click: function($item) {
+            alert('Moving item: ' + $item.index());
+          }
+        }, {
+          icon: 'fa fa-paper-plane',
+          text: 'Send via mail',  
+          click: function($item) {
+            alert('Sending a mail!');
+          }
+        }, {
+          cssClass: 'divider'
+        }, {
+          text: 'More...',
+          children: [{
+            text: 'Delete'
+          }, {
+            text: 'Download...',
+            children: [{
+              text: 'Save as PDF'
+            }, {
+              text: 'Save as PNG'
+            }]
+          }]
+        }]
+      });
+
+
+      $(function() {
+        // Use the contextselect event to handle selections inside the context menu
+        $('#html-example-list [data-context-menu]').on('contextselect.zf.contextmenu', function(e, data) {
+          var element = data.element.attr('data-element'),
+              option = data.option.attr('data-option');
+          alert('Performing action: ' + option + ' on item ' + element);
+        });
+
+        // Generate context menus with pure JS
+        $('#javascript-example-list li').on('contextmenu', function(event) {
+          event.preventDefault();
+
+          var jsContextMenu = new Foundation.ContextMenu($(this), {
+            position: event,
+            structure: [{
+              text: 'Move to',
+              click: function($item) {
+                alert('Moving item: ' + $item.index());
+              }
+            }, {
+              icon: 'fa fa-paper-plane',
+              text: 'Send via mail',  
+              click: function($item) {
+                alert('Sending a mail!');
+              }
+            }]
+          });
+          // Destroy context menu once it's closed
+          $(this).one('hide.zf.contextmenu', function() {
+            jsContextMenu.destroy();
+          });
+        });
+      });
+
+      // initialize Foundation
+      $(document).foundation();
+    </script>
+  </body>
+</html>
