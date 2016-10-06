@@ -10,7 +10,7 @@
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link rel="stylesheet" href="lib/foundation-sites/dist/foundation.css">
+    <link rel="stylesheet" href="assets/foundation-sites/dist/foundation.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="assets/foundation.contextMenu.css">
     <style type="text/css">
@@ -317,6 +317,53 @@
                   </div>
                 </div>
               </div>
+              <div class="columns small-12" id="javascript-example" data-magellan-target="javascript-example">
+                <hr />
+                <h2>Creating Context Menus with JS</h2>
+                <p>
+                  It is also possible to open context menus on the fly without attaching them to an actual HTML element. This approach is based on the JSON method shown above. Creating the plugin instance on demand might me helpful when dealing with dynamic applications that keep on re-rendering parts of the page.
+                </p>
+                <div class="row">
+                  <div class="columns small-12 large-4">
+                    <ul class="list" id="javascript-example-list">
+                      <li>
+                        <span class="fa fa-file-pdf-o"></span> Some document
+                      </li>
+                      <li>
+                        <span class="fa fa-file-pdf-o"></span> Another document
+                      </li>
+                      <li>
+                        <span class="fa fa-file-powerpoint-o"></span> Important presentation
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="columns small-12 large-8">
+<pre><code class="hljs js">$(<span class="hljs-string">'#javascript-example-list li'</span>).on(<span class="hljs-string">'contextmenu'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">event</span>) </span>{
+  event.preventDefault();
+
+  <span class="hljs-keyword">var</span> jsContextMenu = <span class="hljs-keyword">new</span> Foundation.ContextMenu($(<span class="hljs-keyword">this</span>), {
+    <span class="hljs-attr">position</span>: event,
+    <span class="hljs-attr">structure</span>: [{
+      <span class="hljs-attr">text</span>: <span class="hljs-string">'Move to'</span>,
+      <span class="hljs-attr">click</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">$item</span>) </span>{
+        alert(<span class="hljs-string">'Moving item: '</span> + $item.index());
+      }
+    }, {
+      <span class="hljs-attr">icon</span>: <span class="hljs-string">'fa fa-paper-plane'</span>,
+      <span class="hljs-attr">text</span>: <span class="hljs-string">'Send via mail'</span>,  
+      <span class="hljs-attr">click</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">$item</span>) </span>{
+        alert(<span class="hljs-string">'Sending a mail!'</span>);
+      }
+    }]
+  });
+  <span class="hljs-comment">// Destroy context menu once it's closed</span>
+  $(<span class="hljs-keyword">this</span>).one(<span class="hljs-string">'hide.zf.contextmenu'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+    jsContextMenu.destroy();
+  });
+});</code></pre>
+                  </div>
+                </div>
+              </div>
               <div class="columns small-12" data-magellan-target="interacting" id="interacting">
                 <hr />
                 <h2>Interacting</h2>
@@ -336,6 +383,7 @@
                 <li><a href="#introduction">Introduction</a></li>
                 <li><a href="#html-example">HTML Example</a></li>
                 <li><a href="#json-example">JSON Example</a></li>
+                <li><a href="#javascript-example">JavaScript Example</a></li>
                 <li><a href="#interacting">Interacting</a></li>
               </ul>
             </nav>  
@@ -351,8 +399,8 @@
         </div>
       </footer>
     </div>
-    <script src="lib/jquery/dist/jquery.js" type="text/javascript"></script>
-    <script src="lib/foundation-sites/dist/foundation.js" type="text/javascript"></script>
+    <script src="assets/jquery/dist/jquery.js" type="text/javascript"></script>
+    <script src="assets/foundation-sites/dist/foundation.js" type="text/javascript"></script>
     <script src="assets/foundation.contextMenu.js" type="text/javascript"></script>
     <script type="text/javascript">
       // Provide structure for first menu item
@@ -389,12 +437,38 @@
         }]
       });
 
+
       $(function() {
+        // Use the contextselect event to handle selections inside the context menu
         $('#html-example-list [data-context-menu]').on('contextselect.zf.contextmenu', function(e, data) {
           var element = data.element.attr('data-element'),
               option = data.option.attr('data-option');
-
           alert('Performing action: ' + option + ' on item ' + element);
+        });
+
+        // Generate context menus with pure JS
+        $('#javascript-example-list li').on('contextmenu', function(event) {
+          event.preventDefault();
+
+          var jsContextMenu = new Foundation.ContextMenu($(this), {
+            position: event,
+            structure: [{
+              text: 'Move to',
+              click: function($item) {
+                alert('Moving item: ' + $item.index());
+              }
+            }, {
+              icon: 'fa fa-paper-plane',
+              text: 'Send via mail',  
+              click: function($item) {
+                alert('Sending a mail!');
+              }
+            }]
+          });
+          // Destroy context menu once it's closed
+          $(this).one('hide.zf.contextmenu', function() {
+            jsContextMenu.destroy();
+          });
         });
       });
 
