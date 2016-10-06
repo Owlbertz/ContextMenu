@@ -19,28 +19,29 @@
    * ContextMenu module.
    * @module foundation.ContextMenu
    * @requires foundation.util.keyboard
-   * @requires foundation.Tooltip
-   * @requires foundation.Reveal
+   * @requires foundation.DropdownMenu
    */
   class ContextMenu {
 
     /**
      * Creates a new instance of ContextMenu.
      * @class
-     * @param {jQuery} element - jQuery object (list) to be used as the structure.
+     * @param {jQuery} element - jQuery object (<ul>) to be used as the structure.
      * @param {Object} options - object to extend the default configuration.
      */
     constructor(element, options) {
       this.$element = element;
-      this.type = this.$element.attr('data-context-menu') || undefined;
-      this.options = $.extend({}, ContextMenu.config, ContextMenu.defaults, options, this._getConfig());
+      this.type = this.$element.attr('data-context-menu') || '';
+      this.options = $.extend({}, ContextMenu.defaults, options, this._getConfig());
       this._init();
-      if (this.type.indexOf('#') === -1) { // currently only for menus defined via JSON
+
+      if (this.type && this.type.indexOf('#') === -1) { // Currently only for menus defined via JSON
         this._registerKeys();
       }
 
       this._bindEvents();
       Foundation.registerPlugin(this, 'ContextMenu');
+
     };
 
     /**
@@ -51,6 +52,10 @@
       this.keys = {};
       this.$menu = this.type.indexOf('#') === 0 ? $(this.type).clone().appendTo('body') : this._getMenu();
       this._render();
+
+      if (this.options.position) { // Show directly if context menu has been created via pure JS
+        this.show(this.options.position);
+      }
     };
 
     /**
@@ -154,6 +159,7 @@
     _bindEvents() {
       var _this = this,
           touchTimeout;
+
       this.$element.on('contextmenu.zf.contextmenu touchstart.zf.contextmenu', function(e) {
         e.preventDefault();
         e.stopPropagation();
@@ -168,6 +174,16 @@
         if (touchTimeout) {
           clearTimeout(touchTimeout);
         }  
+      });
+
+
+      // SR support, open context menu on trigger click
+      this.$element.find('[data-context-menu-trigger]').on('click.zf.contextmenu', function(e) {
+        e.stopPropagation();
+        _this.show();
+        _this.$menu.attr({
+          'tabindex': '-1'
+        }).focus();
       });
       
       // For HTML based context menus, handle clicks on context menu items
@@ -208,14 +224,6 @@
         }
       });
 
-      // SR support, open context menu on trigger click
-      this.$element.find('[data-context-menu-trigger]').on('click.zf.contextmenu', function(e) {
-        e.stopPropagation();
-        _this.show();
-        _this.$menu.attr({
-          'tabindex': '-1'
-        }).focus();
-      });
     };
 
     /**
@@ -282,7 +290,6 @@
     hide(e) {
       this.$menu.hide().removeClass('align-right');
       this.open = false;
-
       /**
        * Fires when the menu is hidden.
        * @event ContextMenu#hide
@@ -305,7 +312,7 @@
 
       Foundation.unregisterPlugin(this);
     };
-  };
+  }
 
 
 
@@ -339,7 +346,13 @@
      * @option
      * @example true
      */
-    closeOnClick: true
+    closeOnClick: true,
+    /**
+     * Event to display the context menu directly when using pure JS
+     * @option
+     * @example Contextmenu DOM Event
+     */
+    position: null
   };
 
   ContextMenu.config = {};

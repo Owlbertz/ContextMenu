@@ -10,6 +10,7 @@ module.exports = {
   destPath: 'dist/',
   buildPath: '_build/',
   pluginPath: '_build/',
+  testPath: 'test/visual/',
   foundationPath: 'node_modules/foundation-sites',
   css: {
     compatibility: ['last 2 versions', 'ie 10', 'Android >= 4.1'], // compatibility for auto prefixer

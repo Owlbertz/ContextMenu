@@ -25,6 +25,13 @@ describe('ContextMenu', function() {
       plugin.$element.should.be.an('object');
       plugin.options.should.be.an('object');
     });
+    it('works without an element being passed', function() {
+      $html = $(templateHtml).appendTo('body');
+      plugin = new Foundation.ContextMenu(null, {});
+
+      plugin.$element.should.be.an('object');
+      plugin.options.should.be.an('object');
+    });
   });
 
   describe('_init()', function() {

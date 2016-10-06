@@ -24,8 +24,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
    * ContextMenu module.
    * @module foundation.ContextMenu
    * @requires foundation.util.keyboard
-   * @requires foundation.Tooltip
-   * @requires foundation.Reveal
+   * @requires foundation.DropdownMenu
    */
 
   var ContextMenu = function () {
@@ -33,7 +32,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     /**
      * Creates a new instance of ContextMenu.
      * @class
-     * @param {jQuery} element - jQuery object (list) to be used as the structure.
+     * @param {jQuery} element - jQuery object (<ul>) to be used as the structure.
      * @param {Object} options - object to extend the default configuration.
      */
 
@@ -41,11 +40,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       _classCallCheck(this, ContextMenu);
 
       this.$element = element;
-      this.type = this.$element.attr('data-context-menu') || undefined;
-      this.options = $.extend({}, ContextMenu.config, ContextMenu.defaults, options, this._getConfig());
+      this.type = this.$element.attr('data-context-menu') || '';
+      this.options = $.extend({}, ContextMenu.defaults, options, this._getConfig());
       this._init();
-      if (this.type.indexOf('#') === -1) {
-        // currently only for menus defined via JSON
+
+      if (this.type && this.type.indexOf('#') === -1) {
+        // Currently only for menus defined via JSON
         this._registerKeys();
       }
 
@@ -65,6 +65,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         this.keys = {};
         this.$menu = this.type.indexOf('#') === 0 ? $(this.type).clone().appendTo('body') : this._getMenu();
         this._render();
+
+        if (this.options.position) {
+          // Show directly if context menu has been created via pure JS
+          this.show(this.options.position);
+        }
       }
     }, {
       key: '_render',
@@ -184,6 +189,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       value: function _bindEvents() {
         var _this = this,
             touchTimeout;
+
         this.$element.on('contextmenu.zf.contextmenu touchstart.zf.contextmenu', function (e) {
           e.preventDefault();
           e.stopPropagation();
@@ -199,6 +205,15 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           if (touchTimeout) {
             clearTimeout(touchTimeout);
           }
+        });
+
+        // SR support, open context menu on trigger click
+        this.$element.find('[data-context-menu-trigger]').on('click.zf.contextmenu', function (e) {
+          e.stopPropagation();
+          _this.show();
+          _this.$menu.attr({
+            'tabindex': '-1'
+          }).focus();
         });
 
         // For HTML based context menus, handle clicks on context menu items
@@ -233,15 +248,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
               fn(_this.$element);
             }
           }
-        });
-
-        // SR support, open context menu on trigger click
-        this.$element.find('[data-context-menu-trigger]').on('click.zf.contextmenu', function (e) {
-          e.stopPropagation();
-          _this.show();
-          _this.$menu.attr({
-            'tabindex': '-1'
-          }).focus();
         });
       }
     }, {
@@ -320,7 +326,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       value: function hide(e) {
         this.$menu.hide().removeClass('align-right');
         this.open = false;
-
         /**
          * Fires when the menu is hidden.
          * @event ContextMenu#hide
@@ -350,8 +355,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
     return ContextMenu;
   }();
-
-  ;
 
   ContextMenu.defaults = {
     /**
@@ -383,7 +386,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
      * @option
      * @example true
      */
-    closeOnClick: true
+    closeOnClick: true,
+    /**
+     * Event to display the context menu directly when using pure JS
+     * @option
+     * @example Contextmenu DOM Event
+     */
+    position: null
   };
 
   ContextMenu.config = {};
