@@ -4,7 +4,8 @@ var gulp = require('gulp'),
   requireDir = require('require-dir'),
   browser = require('browser-sync'),
   config = require('./gulp/config'),
-  port = process.env.SERVER_PORT || 3001;
+  exec = require('child_process').exec,
+  port = process.env.SERVER_PORT || 3000;
 
 requireDir('./gulp');
 
