@@ -5,6 +5,7 @@ body {
   background: -moz-linear-gradient(-45deg, #a50306 0%, #8f0222 44%, #6d0001 100%); /* FF3.6-15 */
   background: -webkit-linear-gradient(-45deg, #a50306 0%,#8f0222 44%,#6d0001 100%); /* Chrome10-25,Safari5.1-6 */
   background: linear-gradient(135deg, #a50306 0%,#8f0222 44%,#6d0001 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  background-attachment: fixed;
 }
 header {
   box-shadow: 0 3px 5px rgba(0,0,0,0.5);
