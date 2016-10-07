@@ -26,7 +26,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
    * @requires foundation.util.keyboard
    * @requires foundation.DropdownMenu
    */
-
   var ContextMenu = function () {
 
     /**
@@ -35,7 +34,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
      * @param {jQuery} element - jQuery object (<ul>) to be used as the structure.
      * @param {Object} options - object to extend the default configuration.
      */
-
     function ContextMenu(element, options) {
       _classCallCheck(this, ContextMenu);
 
@@ -236,7 +234,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         }
 
         // Handle closing the context menu on outside click
-        $('body').on('click.zf.contextmenu touchstart.zf.contextmenu', function (e) {
+        $('body').on('click.zf.contextmenu touchstart.zf.contextmenu contextmenu.zf.contextmenu', function (e) {
           if (_this.open && !$(e.target).is(_this.$menu.add($(_this.$menu.find('*')))) && (!($(e.target).is(_this.$element) && e.button === 3) || e.type === 'touchstart')) {
             _this.hide();
           }

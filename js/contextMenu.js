@@ -160,32 +160,34 @@
       var _this = this,
           touchTimeout;
 
-      this.$element.on('contextmenu.zf.contextmenu touchstart.zf.contextmenu', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        if (e.type === 'touchstart') {
-          touchTimeout = setTimeout(function() {
-            _this.show(e);  
-          }, _this.options.touchdelay);
-        } else { // normal click
-          _this.show(e);
-        }
-      }).on('touchend.zf.contextmenu', function(e) {
-        if (touchTimeout) {
-          clearTimeout(touchTimeout);
-        }  
-      });
-
-
-      // SR support, open context menu on trigger click
-      this.$element.find('[data-context-menu-trigger]').on('click.zf.contextmenu', function(e) {
-        e.stopPropagation();
-        _this.show();
-        _this.$menu.attr({
-          'tabindex': '-1'
-        }).focus();
-      });
+      if (!this.options.position) { // If position is set, it is shown directly and these listeners are not needed
+        this.$element.on('contextmenu.zf.contextmenu touchstart.zf.contextmenu', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          if (e.type === 'touchstart') {
+            touchTimeout = setTimeout(function() {
+              _this.show(e);  
+            }, _this.options.touchdelay);
+          } else { // normal click
+            _this.show(e);
+          }
+        }).on('touchend.zf.contextmenu', function(e) {
+          if (touchTimeout) {
+            clearTimeout(touchTimeout);
+          }  
+        });
       
+
+        // SR support, open context menu on trigger click
+        this.$element.find('[data-context-menu-trigger]').on('click.zf.contextmenu', function(e) {
+          e.stopPropagation();
+          _this.show();
+          _this.$menu.attr({
+            'tabindex': '-1'
+          }).focus();
+        });
+      }
+
       // For HTML based context menus, handle clicks on context menu items
       if (this.type.indexOf('#') !== -1) {
         this.$menu.find('a').on('click.zf.contextmenu', function(e) {
@@ -212,6 +214,7 @@
             !($(e.target).is(_this.$element) && e.button === 3)
             || e.type === 'touchstart'
           )
+          && !(_this.options.position && _this.options.position.timeStamp === e.timeStamp) // Not close on initial click for options.position is set
         ) {
           _this.hide();
         }
@@ -288,6 +291,10 @@
      * @fires ContextMenu#show
      */
     hide(e) {
+      if (!this.open) {
+        return;
+      }
+
       this.$menu.hide().removeClass('align-right');
       this.open = false;
       /**

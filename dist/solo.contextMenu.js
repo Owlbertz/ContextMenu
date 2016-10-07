@@ -642,9 +642,9 @@
         // this component does not differentiate between ltr and rtl
         cmds = commandList; // use plain list
       } else {
-          // merge ltr and rtl: if document is rtl, rtl overwrites ltr and vice versa
-          if (Foundation.rtl()) cmds = $.extend({}, commandList.ltr, commandList.rtl);else cmds = $.extend({}, commandList.rtl, commandList.ltr);
-        }
+        // merge ltr and rtl: if document is rtl, rtl overwrites ltr and vice versa
+        if (Foundation.rtl()) cmds = $.extend({}, commandList.ltr, commandList.rtl);else cmds = $.extend({}, commandList.rtl, commandList.ltr);
+      }
       command = cmds[keyCode];
 
       fn = functions[command];
@@ -1022,7 +1022,7 @@
 
   var Nest = {
     Feather: function (menu) {
-      var type = arguments.length <= 1 || arguments[1] === undefined ? 'zf' : arguments[1];
+      var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'zf';
 
       menu.attr('role', 'menubar');
 
@@ -1788,7 +1788,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
      * @param {jQuery} element - jQuery object to make into a dropdown menu.
      * @param {Object} options - Overrides to the default plugin settings.
      */
-
     function DropdownMenu(element, options) {
       _classCallCheck(this, DropdownMenu);
 
@@ -2251,7 +2250,6 @@ function _classCallCheck(instance, Constructor) {
    * @requires foundation.util.keyboard
    * @requires foundation.DropdownMenu
    */
-
   var ContextMenu = function () {
 
     /**
@@ -2260,7 +2258,6 @@ function _classCallCheck(instance, Constructor) {
      * @param {jQuery} element - jQuery object (<ul>) to be used as the structure.
      * @param {Object} options - object to extend the default configuration.
      */
-
     function ContextMenu(element, options) {
       _classCallCheck(this, ContextMenu);
 
@@ -2455,7 +2452,7 @@ function _classCallCheck(instance, Constructor) {
         }
 
         // Handle closing the context menu on outside click
-        $('body').on('click.zf.contextmenu touchstart.zf.contextmenu', function (e) {
+        $('body').on('click.zf.contextmenu touchstart.zf.contextmenu contextmenu.zf.contextmenu', function (e) {
           if (_this.open && !$(e.target).is(_this.$menu.add($(_this.$menu.find('*')))) && (!($(e.target).is(_this.$element) && e.button === 3) || e.type === 'touchstart')) {
             _this.hide();
           }
