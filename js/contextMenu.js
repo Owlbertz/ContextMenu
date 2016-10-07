@@ -204,7 +204,7 @@
       }
 
       // Handle closing the context menu on outside click
-      $('body').on('click.zf.contextmenu touchstart.zf.contextmenu', function(e) {
+      $('body').on('click.zf.contextmenu touchstart.zf.contextmenu contextmenu.zf.contextmenu', function(e) {
         if (
           _this.open
           && !$(e.target).is(_this.$menu.add($(_this.$menu.find('*'))))
