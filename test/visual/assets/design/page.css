@@ -1,11 +1,20 @@
+@import 'https://fonts.googleapis.com/css?family=Josefin+Sans:700|Lato:300';
 
 /* Page design */
+html {
+  font-size: 90%;
+}
 body {
   background: #a50306; /* Old browsers */
   background: -moz-linear-gradient(-45deg, #a50306 0%, #8f0222 44%, #6d0001 100%); /* FF3.6-15 */
   background: -webkit-linear-gradient(-45deg, #a50306 0%,#8f0222 44%,#6d0001 100%); /* Chrome10-25,Safari5.1-6 */
   background: linear-gradient(135deg, #a50306 0%,#8f0222 44%,#6d0001 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
   background-attachment: fixed;
+  font-family: "Lato", "Helvetica Neue", "Arial", sans-serif;
+  font-weight: 300;
+}
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Josefin Sans", Helvetica, Roboto, Arial, sans-serif;
 }
 header {
   box-shadow: 0 3px 5px rgba(0,0,0,0.5);
@@ -27,6 +36,9 @@ header, footer {
 header p {
   font-size: 1.6rem;
   line-height: 1.2em;
+}
+p {
+  line-height: 1.4;
 }
 a {
   color: #6d0001;
