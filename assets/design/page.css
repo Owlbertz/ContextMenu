@@ -47,10 +47,17 @@ a:active, a:focus, a:hover {
   color: #a50306;
 }
 .dropdown.menu.vertical > li.opens-right > a::after {
-      border-color: transparent transparent transparent #CA104B;
+      border-color: transparent transparent transparent #6d0001;
 }
 .dropdown.menu.vertical > li.opens-left > a::after {
-  border-color: transparent #CA104B transparent transparent;
+  border-color: transparent #6d0001 transparent transparent;
+}
+
+.dropdown.menu.vertical > li.opens-right > a:hover::after {
+      border-color: transparent transparent transparent #fff;
+}
+.dropdown.menu.vertical > li.opens-left > a:hover::after {
+  border-color: transparent #fff transparent transparent;
 }
 
 /* Demo related */
