@@ -1,16 +1,8 @@
 {
   "_args": [
     [
-      {
-        "raw": "jquery@^2.2.2",
-        "scope": null,
-        "escapedName": "jquery",
-        "name": "jquery",
-        "rawSpec": "^2.2.2",
-        "spec": ">=2.2.2 <3.0.0",
-        "type": "range"
-      },
-      "/home/marius/Documents/context/code"
+      "jquery@^2.2.2",
+      "/home/marius/Dokumente/ContextMenu"
     ]
   ],
   "_from": "jquery@>=2.2.2 <3.0.0",
@@ -24,30 +16,28 @@
     "tmp": "tmp/jquery-2.2.4.tgz_1463765166836_0.5834389675874263"
   },
   "_npmUser": {
-    "name": "timmywil",
-    "email": "timmywillisn@gmail.com"
+    "email": "timmywillisn@gmail.com",
+    "name": "timmywil"
   },
   "_npmVersion": "2.15.1",
   "_phantomChildren": {},
   "_requested": {
-    "raw": "jquery@^2.2.2",
-    "scope": null,
-    "escapedName": "jquery",
     "name": "jquery",
+    "raw": "jquery@^2.2.2",
     "rawSpec": "^2.2.2",
+    "scope": null,
     "spec": ">=2.2.2 <3.0.0",
     "type": "range"
   },
   "_requiredBy": [
     "/",
-    "/foundation-sites",
     "/motion-ui"
   ],
   "_resolved": "https://registry.npmjs.org/jquery/-/jquery-2.2.4.tgz",
   "_shasum": "2c89d6889b5eac522a7eea32c14521559c6cbf02",
   "_shrinkwrap": null,
   "_spec": "jquery@^2.2.2",
-  "_where": "/home/marius/Documents/context/code",
+  "_where": "/home/marius/Dokumente/ContextMenu",
   "author": {
     "name": "jQuery Foundation and other contributors",
     "url": "https://github.com/jquery/jquery/blob/2.2.4/AUTHORS.txt"
@@ -57,26 +47,26 @@
   },
   "commitplease": {
     "components": [
-      "Docs",
-      "Tests",
-      "Build",
-      "Release",
-      "Core",
       "Ajax",
       "Attributes",
-      "Callbacks",
+      "Build",
       "CSS",
+      "Callbacks",
+      "Core",
       "Data",
       "Deferred",
       "Deprecated",
       "Dimensions",
+      "Docs",
       "Effects",
       "Event",
       "Manipulation",
       "Offset",
       "Queue",
+      "Release",
       "Selector",
       "Serialize",
+      "Tests",
       "Traversing",
       "Wrap"
     ]
@@ -117,9 +107,9 @@
   "gitHead": "c0185ab7c75aab88762c5aae780b9d83b80eda72",
   "homepage": "http://jquery.com",
   "keywords": [
-    "jquery",
-    "javascript",
     "browser",
+    "javascript",
+    "jquery",
     "library"
   ],
   "license": "MIT",

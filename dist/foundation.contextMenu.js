@@ -140,9 +140,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             $a.on('click.zf.contextmenu', function (e) {
               e.preventDefault();
               e.stopPropagation();
+              var isClickableItem = true;
               if (config[index].click && typeof config[index].click === 'function') {
                 // For defined functions, execute them
                 config[index].click(_this.$element);
+              } else {
+                isClickableItem = false;
               }
 
               // Emit event about selected item
@@ -151,8 +154,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                 option: $(this)
               });
 
-              if (_this.options.closeOnClick) {
+              if (_this.options.closeOnClick && isClickableItem) {
                 // Hide context menu
+                _this.hide();
+              } else if (_this.options.emptyEntryWillCloseMenu && !isClickableItem) {
                 _this.hide();
               }
             });
@@ -188,31 +193,34 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         var _this = this,
             touchTimeout;
 
-        this.$element.on('contextmenu.zf.contextmenu touchstart.zf.contextmenu', function (e) {
-          e.preventDefault();
-          e.stopPropagation();
-          if (e.type === 'touchstart') {
-            touchTimeout = setTimeout(function () {
+        if (!this.options.position) {
+          // If position is set, it is shown directly and these listeners are not needed
+          this.$element.on('contextmenu.zf.contextmenu touchstart.zf.contextmenu', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (e.type === 'touchstart') {
+              touchTimeout = setTimeout(function () {
+                _this.show(e);
+              }, _this.options.touchdelay);
+            } else {
+              // normal click
               _this.show(e);
-            }, _this.options.touchdelay);
-          } else {
-            // normal click
-            _this.show(e);
-          }
-        }).on('touchend.zf.contextmenu', function (e) {
-          if (touchTimeout) {
-            clearTimeout(touchTimeout);
-          }
-        });
+            }
+          }).on('touchend.zf.contextmenu', function (e) {
+            if (touchTimeout) {
+              clearTimeout(touchTimeout);
+            }
+          });
 
-        // SR support, open context menu on trigger click
-        this.$element.find('[data-context-menu-trigger]').on('click.zf.contextmenu', function (e) {
-          e.stopPropagation();
-          _this.show();
-          _this.$menu.attr({
-            'tabindex': '-1'
-          }).focus();
-        });
+          // SR support, open context menu on trigger click
+          this.$element.find('[data-context-menu-trigger]').on('click.zf.contextmenu', function (e) {
+            e.stopPropagation();
+            _this.show();
+            _this.$menu.attr({
+              'tabindex': '-1'
+            }).focus();
+          });
+        }
 
         // For HTML based context menus, handle clicks on context menu items
         if (this.type.indexOf('#') !== -1) {
@@ -235,9 +243,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
         // Handle closing the context menu on outside click
         $('body').on('click.zf.contextmenu touchstart.zf.contextmenu contextmenu.zf.contextmenu', function (e) {
-          if (_this.open && !$(e.target).is(_this.$menu.add($(_this.$menu.find('*')))) && (!($(e.target).is(_this.$element) && e.button === 3) || e.type === 'touchstart')) {
-            _this.hide();
-          }
+          if (_this.open && !$(e.target).is(_this.$menu.add($(_this.$menu.find('*')))) && (!($(e.target).is(_this.$element) && e.button === 3) || e.type === 'touchstart') && !(_this.options.position && _this.options.position.timeStamp === e.timeStamp) // Not close on initial click for options.position is set
+          ) {
+              _this.hide();
+            }
         }).on('keydown.zf.contextmenu', function (e) {
           // If keyboard shortcuts are defined, handle them
           if (_this.open) {
@@ -322,6 +331,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
        * @fires ContextMenu#show
        */
       value: function hide(e) {
+        if (!this.open) {
+          return;
+        }
+
         this.$menu.hide().removeClass('align-right');
         this.open = false;
         /**
@@ -385,6 +398,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
      * @example true
      */
     closeOnClick: true,
+    /**
+     * If the menu should be closed if an option without a click function was clicked.
+     * @option
+     * @example true
+     */
+    emptyEntryWillCloseMenu: true,
     /**
      * Event to display the context menu directly when using pure JS
      * @option

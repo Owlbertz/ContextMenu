@@ -21,9 +21,9 @@ module.exports = {
   },
   javascript: {
     dependencies: [ // define JS dependencies for this project to concat
-      'node_modules/foundation-sites/js/foundation.core.js',
-      'node_modules/foundation-sites/js/foundation.util.*.js',
-      'node_modules/foundation-sites/js/foundation.dropdownMenu.js'
+      'node_modules/foundation-sites/dist/plugins/foundation.core.js',
+      'node_modules/foundation-sites/dist/plugins/foundation.util.*.js',
+      'node_modules/foundation-sites/dist/plugins/foundation.dropdownMenu.js'
     ]
   }
 };
