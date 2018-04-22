@@ -1,59 +1,62 @@
 {
   "_args": [
     [
-      {
-        "raw": "foundation-sites@latest",
-        "scope": null,
-        "escapedName": "foundation-sites",
-        "name": "foundation-sites",
-        "rawSpec": "latest",
-        "spec": "latest",
-        "type": "tag"
-      },
-      "/home/marius/Documents/context/code"
+      "foundation-sites@6.2.4",
+      "/home/marius/Dokumente/ContextMenu"
     ]
   ],
-  "_from": "foundation-sites@latest",
-  "_id": "foundation-sites@6.2.3",
+  "_from": "foundation-sites@6.2.4",
+  "_id": "foundation-sites@6.2.4",
   "_inCache": true,
   "_installable": true,
   "_location": "/foundation-sites",
   "_nodeVersion": "4.2.2",
   "_npmOperationalInternal": {
-    "host": "packages-16-east.internal.npmjs.com",
-    "tmp": "tmp/foundation-sites-6.2.3.tgz_1464370038284_0.0697401852812618"
+    "host": "packages-12-west.internal.npmjs.com",
+    "tmp": "tmp/foundation-sites-6.2.4.tgz_1477008112372_0.21581082977354527"
   },
   "_npmUser": {
-    "name": "kbal11",
-    "email": "kball@zurb.com"
+    "email": "kball@zurb.com",
+    "name": "kbal11"
   },
-  "_npmVersion": "2.14.7",
+  "_npmVersion": "3.9.6",
   "_phantomChildren": {},
   "_requested": {
-    "raw": "foundation-sites@latest",
-    "scope": null,
-    "escapedName": "foundation-sites",
     "name": "foundation-sites",
-    "rawSpec": "latest",
-    "spec": "latest",
-    "type": "tag"
+    "raw": "foundation-sites@6.2.4",
+    "rawSpec": "6.2.4",
+    "scope": null,
+    "spec": "6.2.4",
+    "type": "version"
   },
   "_requiredBy": [
     "#DEV:/"
   ],
-  "_resolved": "https://registry.npmjs.org/foundation-sites/-/foundation-sites-6.2.3.tgz",
-  "_shasum": "5fab6c24552c274361368758dd02df8336373e56",
+  "_resolved": "https://registry.npmjs.org/foundation-sites/-/foundation-sites-6.2.4.tgz",
+  "_shasum": "554746c9f3d505bd5646b4dcc03f8a9941e67f7b",
   "_shrinkwrap": null,
-  "_spec": "foundation-sites@latest",
-  "_where": "/home/marius/Documents/context/code",
+  "_spec": "foundation-sites@6.2.4",
+  "_where": "/home/marius/Dokumente/ContextMenu",
   "author": {
-    "name": "ZURB",
     "email": "foundation@zurb.com",
+    "name": "ZURB",
     "url": "http://foundation.zurb.com"
   },
+  "browserify": {
+    "transform": [
+      [
+        "babelify",
+        {
+          "presets": [
+            "es2015"
+          ]
+        }
+      ]
+    ]
+  },
   "bugs": {
-    "url": "https://github.com/zurb/foundation-sites/issues",
-    "email": "foundation@zurb.com"
+    "email": "foundation@zurb.com",
+    "url": "https://github.com/zurb/foundation-sites/issues"
   },
   "dependencies": {
     "jquery": "^2.2.0",
@@ -83,7 +86,7 @@
     "gulp-add-src": "^0.2.0",
     "gulp-autoprefixer": "^2.3.1",
     "gulp-babel": "^6.1.1",
-    "gulp-cache-bust": "^1.0.2",
+    "gulp-cache-bust": "1.0.2",
     "gulp-concat": "^2.4.3",
     "gulp-cssnano": "^2.1.0",
     "gulp-eslint": "^2.0.0",
@@ -100,7 +103,7 @@
     "gulp-ruby-sass": "^2.0.6",
     "gulp-sass": "^2.1.0",
     "gulp-scss-lint": "^0.3.9",
-    "gulp-sourcemaps": "^1.6.0",
+    "gulp-sourcemaps": "1.6.0",
     "gulp-uglify": "^1.1.0",
     "gulp-zip": "^3.2.0",
     "inquirer": "^0.11.4",
@@ -128,15 +131,16 @@
   },
   "directories": {},
   "dist": {
-    "shasum": "5fab6c24552c274361368758dd02df8336373e56",
-    "tarball": "https://registry.npmjs.org/foundation-sites/-/foundation-sites-6.2.3.tgz"
+    "shasum": "554746c9f3d505bd5646b4dcc03f8a9941e67f7b",
+    "tarball": "https://registry.npmjs.org/foundation-sites/-/foundation-sites-6.2.4.tgz"
   },
   "eyeglass": {
+    "exports": false,
     "name": "foundation",
-    "sassDir": "scss",
-    "needs": "^0.8.0"
+    "needs": "^0.8.0",
+    "sassDir": "scss"
   },
-  "gitHead": "3e4478b793bac38d2e7d7d5772a97f2ba44237c1",
+  "gitHead": "ab172838d6de406204956015c9fd393c5a526e0e",
   "homepage": "http://foundation.zurb.com/sites",
   "jspm": {
     "format": "global",
@@ -149,6 +153,7 @@
     }
   },
   "keywords": [
+    "eyeglass-module",
     "handlebars-helper-rel",
     "handlebars-helper-slugify"
   ],
@@ -193,5 +198,5 @@
     "test:sass": "mocha test/sass/test_sass.js",
     "test:visual": "gulp test"
   },
-  "version": "6.2.3"
+  "version": "6.2.4"
 }

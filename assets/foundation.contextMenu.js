@@ -140,9 +140,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             $a.on('click.zf.contextmenu', function (e) {
               e.preventDefault();
               e.stopPropagation();
+              var isClickableItem = true;
               if (config[index].click && typeof config[index].click === 'function') {
                 // For defined functions, execute them
                 config[index].click(_this.$element);
+              } else {
+                isClickableItem = false;
               }
 
               // Emit event about selected item
@@ -151,8 +154,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                 option: $(this)
               });
 
-              if (_this.options.closeOnClick) {
+              if (_this.options.closeOnClick && isClickableItem) {
                 // Hide context menu
+                _this.hide();
+              } else if (_this.options.emptyEntryWillCloseMenu && !isClickableItem) {
                 _this.hide();
               }
             });
@@ -393,6 +398,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
      * @example true
      */
     closeOnClick: true,
+    /**
+     * If the menu should be closed if an option without a click function was clicked.
+     * @option
+     * @example true
+     */
+    emptyEntryWillCloseMenu: true,
     /**
      * Event to display the context menu directly when using pure JS
      * @option
