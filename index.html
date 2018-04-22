@@ -207,8 +207,54 @@
                   <li><code>option</code>: The selected context menu entry (<code>a</code>-element).</li>
                 </ul>
               </div>
+
+              <div class="columns small-12" id="options" data-magellan-target="options">
+                <hr />
+                <h2>Options</h2>
+                <p>
+                  The following options can be used.
+                </p>
+                <ul>
+                  <li>
+                    <strong>single</strong>
+                    <p>If only one menu should be open at a time.</p>
+                    <em>Default is <code>true</code>.</em>
+                  </li>
+                  <li>
+                    <strong>accessible</strong>
+                    <p>If ARIA attributes should be added.</p>
+                    <em>Default is <code>true</code>.</em>
+                  </li>
+                  <li>
+                    <strong>touchdelay</strong>
+                    <p>Delay for touch event before the menu opens.</p>
+                    <em>Default is <code>400</code>.</em>
+                  </li>
+                  <li>
+                    <strong>screenOffset</strong>
+                    <p>Minimum offset to the screen.</p>
+                    <em>Default is <code>10</code>.</em>
+                  </li>
+                  <li>
+                    <strong>closeOnClick</strong>
+                    <p>If the menu should be closed after clicking an option.</p>
+                    <em>Default is <code>true</code>.</em>
+                  </li>
+                  <li>
+                    <strong>emptyEntryWillCloseMenu</strong>
+                    <p>If the menu should be closed if an option without a click function was clicked.</p>
+                    <em>Default is <code>true</code>.</em>
+                  </li>
+                  <li>
+                    <strong>position</strong>
+                    <p>Event to display the context menu directly when using pure JS.</p>
+                    <em>Default is <code>null</code>.</em>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
+
           <div class="columns small-12 medium-3" data-sticky-container>
             <nav class="columns sticky" data-sticky data-anchor="main" data-sticky-on="medium">
               <ul class="vertical menu side-nav" data-magellan>
@@ -217,6 +263,7 @@
                 <li><a href="#json-example">JSON Example</a></li>
                 <li><a href="#javascript-example">JavaScript Example</a></li>
                 <li><a href="#interacting">Interacting</a></li>
+                <li><a href="#options">Options</a></li>
               </ul>
             </nav>  
           </div>
