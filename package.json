@@ -1,6 +1,6 @@
 {
   "name": "foundation-contextmenu",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Context Menu plugin for Foundation 6.",
   "main": "foundation.contextMenu.js",
   "repository": {
@@ -12,7 +12,7 @@
     "menu",
     "foundation"
   ],
-  "author": "Marius Olbertz",
+  "author": "Marius Korte",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/Owlbertz/ContextMenu/issues"
@@ -62,6 +62,6 @@
     "run-sequence": "^1.1.5"
   },
   "dependencies": {
-    "jquery": "^2.2.2"
+    "jquery": "^3.3.1"
   }
 }
