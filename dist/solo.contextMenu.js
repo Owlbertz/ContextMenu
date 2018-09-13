@@ -2245,7 +2245,7 @@ function _classCallCheck(instance, Constructor) {
 'use strict';
 /**
  *  Context Menu plugin for Foundation 6
- *  Author: Marius Olbertz - Github: /Owlbertz
+ *  Author: Marius Korte - Github: /Owlbertz
  */
 
 var _createClass = function () {
@@ -2375,6 +2375,9 @@ function _classCallCheck(instance, Constructor) {
           if (config[it].cssClass) {
             $li.addClass(config[it].cssClass);
           }
+          if (config[it].isDisabled) {
+            $li.addClass('disabled');
+          }
           if (config[it].icon) {
             $a.append('<span class="icon ' + config[it].icon + '"></span>');
           }
@@ -2391,6 +2394,10 @@ function _classCallCheck(instance, Constructor) {
             $a.on('click.zf.contextmenu', function (e) {
               e.preventDefault();
               e.stopPropagation();
+              if (config[index].isDisabled) {
+                return;
+              }
+
               var isClickableItem = true;
               if (config[index].click && typeof config[index].click === 'function') {
                 // For defined functions, execute them

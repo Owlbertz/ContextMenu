@@ -1,7 +1,7 @@
 'use strict';
 /**
  *  Context Menu plugin for Foundation 6
- *  Author: Marius Olbertz - Github: /Owlbertz
+ *  Author: Marius Korte - Github: /Owlbertz
  */
 !(function (root, factory) {
   if (typeof define === 'function' && define.amd) {
@@ -100,6 +100,9 @@
         if (config[it].cssClass) {
           $li.addClass(config[it].cssClass);
         }
+        if (config[it].isDisabled) {
+          $li.addClass('disabled');
+        }
         if (config[it].icon) {
           $a.append('<span class="icon '+config[it].icon+'"></span>');
         }
@@ -116,6 +119,10 @@
           $a.on('click.zf.contextmenu', function(e) {
             e.preventDefault();
             e.stopPropagation();
+            if (config[index].isDisabled) {
+              return;
+            }
+
             var isClickableItem = true;
             if (config[index].click && typeof config[index].click === 'function') { // For defined functions, execute them
               config[index].click(_this.$element);

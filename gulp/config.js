@@ -1,7 +1,7 @@
 /**
  * Configuration file for the gulp tasks.
  *
- * @author Marius Olbertz
+ * @author Marius Korte
  * @version 0.1
  */
 module.exports = {

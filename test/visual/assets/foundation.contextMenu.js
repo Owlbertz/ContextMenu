@@ -1,7 +1,7 @@
 'use strict';
 /**
  *  Context Menu plugin for Foundation 6
- *  Author: Marius Olbertz - Github: /Owlbertz
+ *  Author: Marius Korte - Github: /Owlbertz
  */
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -124,6 +124,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           if (config[it].cssClass) {
             $li.addClass(config[it].cssClass);
           }
+          if (config[it].isDisabled) {
+            $li.addClass('disabled');
+          }
           if (config[it].icon) {
             $a.append('<span class="icon ' + config[it].icon + '"></span>');
           }
@@ -140,6 +143,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             $a.on('click.zf.contextmenu', function (e) {
               e.preventDefault();
               e.stopPropagation();
+              if (config[index].isDisabled) {
+                return;
+              }
+
               var isClickableItem = true;
               if (config[index].click && typeof config[index].click === 'function') {
                 // For defined functions, execute them
