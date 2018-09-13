@@ -20,7 +20,8 @@ Foundation.ContextMenu.prototype.addConfig('listitem', {
   }, {
     text: 'More...',
     children: [{
-      text: 'Delete'
+      text: 'Delete',
+      isDisabled: true
     }, {
       text: 'Download...',
       children: [{

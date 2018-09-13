@@ -86,6 +86,16 @@ a:active, a:focus, a:hover {
 .context li:not(.divider):hover > span {
   color: #ffffff;
 }
+.context li.disabled a {
+  color: #bebebe;
+}
+.context li.disabled:not(.divider):hover,
+.context li.disabled:not(.divider) a:hover,
+.context li.disabled.is-active > a {
+  background-color: #bebebe;
+  color: #333333;
+}
+
 .fa[class*="powerpoint"] {
   color: #aa3333;
 }
