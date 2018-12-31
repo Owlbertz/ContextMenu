@@ -2562,6 +2562,11 @@ function _classCallCheck(instance, Constructor) {
           this.$menu.addClass('align-right');
         }
 
+        // Position element higher if it would cause vertical scrolling
+        if (posY + this.$menu.outerHeight() > $(window).outerHeight() + window.scrollY) {
+          posY = $(window).outerHeight() + window.scrollY - this.$menu.outerHeight() - this.options.screenOffset;
+        }
+
         this.$menu.css({
           top: posY,
           left: posX
@@ -2569,6 +2574,7 @@ function _classCallCheck(instance, Constructor) {
 
         this.$menu.css('visibility', '');
         this.open = true;
+        $('body').addClass('contextmenu-open');
 
         /**
          * Fires when the menu is shown..
@@ -2591,6 +2597,11 @@ function _classCallCheck(instance, Constructor) {
 
         this.$menu.hide().removeClass('align-right');
         this.open = false;
+
+        // Remove class from body if last menu is closed
+        if ($('.context.menu').filter(':visible').length === 0) {
+          $('body').removeClass('contextmenu-open');
+        }
         /**
          * Fires when the menu is hidden.
          * @event ContextMenu#hide
