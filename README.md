@@ -101,7 +101,7 @@ In that case you can embed the files using:
 ## Demo
 Test the Context Menu on your own at the demo page!
 
-http://Owlbertz.github.io/ContextMenu/
+https://Owlbertz.github.io/ContextMenu/
 
 ## Acknowledgments
 As this project is a plugin for Foundation by ZURB, a big thanks for their stunning framework.
