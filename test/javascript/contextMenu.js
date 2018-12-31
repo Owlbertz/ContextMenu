@@ -53,6 +53,13 @@ describe('ContextMenu', function() {
       plugin.show();
       plugin.$menu.should.be.visible;
     });
+    it('adds class to the body', function() {
+      $html = $(templateHtml).appendTo('body');
+      plugin = new Foundation.ContextMenu($html.find('[data-context-menu]'), {});
+
+      plugin.show();
+      $('body').should.have.class('contextmenu-open');
+    });
   });
 
   describe('hide()', function() {
@@ -63,6 +70,25 @@ describe('ContextMenu', function() {
       plugin.show();
       plugin.hide();
       plugin.$menu.should.be.hidden;
+    });
+    it('removes class from the body', function() {
+      $html = $(templateHtml).appendTo('body');
+      plugin = new Foundation.ContextMenu($html.find('[data-context-menu]'), {});
+
+      plugin.show();
+      plugin.hide();
+      $('body').should.not.have.class('contextmenu-open');
+    });
+    it('does not remove class from the body if another menu is open', function() {
+      $html = $(templateHtml).appendTo('body');
+      var $html2 = $(templateHtml).clone().appendTo('body');
+      plugin = new Foundation.ContextMenu($html.find('[data-context-menu]'), {});
+      var plugin2 = new Foundation.ContextMenu($html2.find('[data-context-menu]'), {});
+
+      plugin.show();
+      plugin2.show();
+      plugin.hide();
+      $('body').should.have.class('contextmenu-open');
     });
   });
 
